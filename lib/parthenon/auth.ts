@@ -7,7 +7,7 @@ export const getAccessToken = (ServerData: ServerData, cb: (accessToken: string)
     "iss": ServerData.email,
     "scope": "https://www.googleapis.com/auth/compute",
     "aud": "https://oauth2.googleapis.com/token",
-    "exp": now + 120,
+    "exp": now + 3000,
     "iat": now,
   }
   const jwtHeader = Buffer.from(JSON.stringify({ alg: "RS256", typ: "JWT" })).toString('base64')
@@ -27,7 +27,6 @@ export const getAccessToken = (ServerData: ServerData, cb: (accessToken: string)
     if (xhr.readyState == 4) {
       if (xhr.status == 200) {
         const resp = JSON.parse(xhr.responseText)
-        console.log(resp.access_token)
         cb(resp.access_token)
       }
     }

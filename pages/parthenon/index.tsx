@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head';
 import { Fragment, useCallback, useEffect, useState } from 'react'
-import { clearInterval } from 'timers';
 import styles from './index.module.scss';
 import { ServerData } from '../../lib/parthenon/types';
 import { getAccessToken } from '../../lib/parthenon/auth';
@@ -11,6 +10,8 @@ import {
   startInstance,
   stopInstance,
 } from '../../lib/parthenon/instances';
+
+const SERVER_DATA_KEY = "parthenon_server_data"
 
 const displayStatus: {[status: string]: string} = {
   [TERMINATED]: "OFFLINE",
@@ -51,6 +52,7 @@ const Manager: NextPage = () => {
   const [accessToken, setAccessToken] = useState<string>("")
   const [instanceStatus, setInstanceStatus] = useState<string | null>(null)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
+  const isIdle = (instanceStatus === RUNNING || instanceStatus === TERMINATED)
   const updateInstanceStatus = useCallback(() => {
     if (accessToken === "") return
     if (serverData === null) return;
@@ -61,24 +63,35 @@ const Manager: NextPage = () => {
   }, [accessToken, serverData, setInstanceStatus, setLastUpdated])
 
   useEffect(() => {
+    const storedServerData = localStorage.getItem(SERVER_DATA_KEY)
+    if (storedServerData !== null) {
+      setServerData(JSON.parse(storedServerData))
+    }
+  }, [])
+
+  useEffect(() => {
     if (serverData === null) return
-    if (accessToken !== "") return //DEBUG
     getAccessToken(serverData, setAccessToken)
   }, [serverData])
   useEffect(updateInstanceStatus, [accessToken])
 
   // auto update periodically
   useEffect(() => {
+    const intervalTime = (instanceStatus === RUNNING || instanceStatus === TERMINATED) ? 10000 : 1000
     const timer = setInterval(() => {
       if (accessToken === "") return
       if (serverData === null) return
       updateInstanceStatus()
-    }, 5000)
+    }, intervalTime)
     return () => clearInterval(timer)
-  }, [])
+  }, [accessToken, serverData, instanceStatus])
 
   if (serverData === null) {
-    return <ServerDataForm onReceivedServerData={setServerData} />
+    const handleReceivedServerData = (newServerData: ServerData) => {
+      localStorage.setItem(SERVER_DATA_KEY, JSON.stringify(newServerData))
+      setServerData(newServerData)
+    }
+    return <ServerDataForm onReceivedServerData={handleReceivedServerData} />
   }
 
   const buttonClass: string[] = [styles.submit]
@@ -86,7 +99,6 @@ const Manager: NextPage = () => {
   else if (instanceStatus === TERMINATED) buttonClass.push(styles.green)
   else buttonClass.push(styles.disabled)
 
-  const isIdle = (instanceStatus === RUNNING || instanceStatus === TERMINATED)
 
   return (
     <Fragment>
