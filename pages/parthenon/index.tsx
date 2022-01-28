@@ -111,7 +111,7 @@ const Manager: NextPage = () => {
       <div className={styles.status}>
         {"STATUS: "}
         {!!instanceStatus
-          ? displayStatus[instanceStatus.status] || instanceStatus
+          ? displayStatus[instanceStatus.status] || instanceStatus.status
           : "Checking status..."
         }
         <button className={`${styles.reload} ${isIdle ? styles.loading : ""}`} type="button" onClick={updateInstanceStatus}>
@@ -128,7 +128,7 @@ const Manager: NextPage = () => {
           if (instanceStatus?.status === TERMINATED) startInstance(serverData, accessToken, updateInstanceStatus)
           else if (instanceStatus?.status === RUNNING) stopInstance(serverData, accessToken, updateInstanceStatus)
         }}>
-        {instanceStatus ? (displayButton[instanceStatus.status] || instanceStatus) : "START"}
+        {instanceStatus ? (displayButton[instanceStatus.status] || instanceStatus.status) : "START"}
       </button>
     </Fragment>
   )
