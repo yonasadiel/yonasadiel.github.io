@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head';
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import styles from './index.module.scss';
-import { ServerData } from '../../lib/parthenon/types';
+import { InstanceStatus, ServerData } from '../../lib/parthenon/types';
 import { getAccessToken } from '../../lib/parthenon/auth';
 import {
   TERMINATED, RUNNING,
@@ -50,9 +50,9 @@ const ServerDataForm = ({ onReceivedServerData }: ServerDataProps) => {
 const Manager: NextPage = () => {
   const [serverData, setServerData] = useState<ServerData | null>(null)
   const [accessToken, setAccessToken] = useState<string>("")
-  const [instanceStatus, setInstanceStatus] = useState<string | null>(null)
+  const [instanceStatus, setInstanceStatus] = useState<InstanceStatus | null>(null)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
-  const isIdle = (instanceStatus === RUNNING || instanceStatus === TERMINATED)
+  const isIdle = (instanceStatus?.status === RUNNING || instanceStatus?.status === TERMINATED)
   const updateInstanceStatus = useCallback(() => {
     if (accessToken === "") return
     if (serverData === null) return;
@@ -65,7 +65,12 @@ const Manager: NextPage = () => {
   useEffect(() => {
     const storedServerData = localStorage.getItem(SERVER_DATA_KEY)
     if (storedServerData !== null) {
-      setServerData(JSON.parse(storedServerData))
+      try {
+        setServerData(JSON.parse(Buffer.from(storedServerData, "base64").toString()))
+      } catch (e) {
+        console.error(e)
+        localStorage.removeItem(SERVER_DATA_KEY)
+      }
     }
   }, [])
 
@@ -77,7 +82,7 @@ const Manager: NextPage = () => {
 
   // auto update periodically
   useEffect(() => {
-    const intervalTime = (instanceStatus === RUNNING || instanceStatus === TERMINATED) ? 10000 : 1000
+    const intervalTime = (instanceStatus?.status === RUNNING || instanceStatus?.status === TERMINATED) ? 10000 : 1000
     const timer = setInterval(() => {
       if (accessToken === "") return
       if (serverData === null) return
@@ -88,24 +93,25 @@ const Manager: NextPage = () => {
 
   if (serverData === null) {
     const handleReceivedServerData = (newServerData: ServerData) => {
-      localStorage.setItem(SERVER_DATA_KEY, JSON.stringify(newServerData))
+      localStorage.setItem(SERVER_DATA_KEY, Buffer.from(JSON.stringify(newServerData)).toString("base64"))
       setServerData(newServerData)
     }
     return <ServerDataForm onReceivedServerData={handleReceivedServerData} />
   }
 
   const buttonClass: string[] = [styles.submit]
-  if (instanceStatus === RUNNING) buttonClass.push(styles.red)
-  else if (instanceStatus === TERMINATED) buttonClass.push(styles.green)
+  if (instanceStatus?.status === RUNNING) buttonClass.push(styles.red)
+  else if (instanceStatus?.status === TERMINATED) buttonClass.push(styles.green)
   else buttonClass.push(styles.disabled)
 
 
   return (
     <Fragment>
+      <div>IP: {instanceStatus ? instanceStatus.ip : " "}</div>
       <div className={styles.status}>
         {"STATUS: "}
         {!!instanceStatus
-          ? displayStatus[instanceStatus] || instanceStatus
+          ? displayStatus[instanceStatus.status] || instanceStatus
           : "Checking status..."
         }
         <button className={`${styles.reload} ${isIdle ? styles.loading : ""}`} type="button" onClick={updateInstanceStatus}>
@@ -119,10 +125,10 @@ const Manager: NextPage = () => {
         disabled={!isIdle}
         onClick={() => {
           setInstanceStatus(null)
-          if (instanceStatus === TERMINATED) startInstance(serverData, accessToken, updateInstanceStatus)
-          else if (instanceStatus === RUNNING) stopInstance(serverData, accessToken, updateInstanceStatus)
+          if (instanceStatus?.status === TERMINATED) startInstance(serverData, accessToken, updateInstanceStatus)
+          else if (instanceStatus?.status === RUNNING) stopInstance(serverData, accessToken, updateInstanceStatus)
         }}>
-        {instanceStatus ? (displayButton[instanceStatus] || instanceStatus) : "START"}
+        {instanceStatus ? (displayButton[instanceStatus.status] || instanceStatus) : "START"}
       </button>
     </Fragment>
   )
