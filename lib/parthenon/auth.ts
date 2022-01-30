@@ -7,7 +7,7 @@ export const getAccessToken = (ServerData: ServerData, cb: (accessToken: string)
     "iss": ServerData.email,
     "scope": "https://www.googleapis.com/auth/compute",
     "aud": "https://oauth2.googleapis.com/token",
-    "exp": now + 3000,
+    "exp": now + 600,
     "iat": now,
   }
   const jwtHeader = Buffer.from(JSON.stringify({ alg: "RS256", typ: "JWT" })).toString('base64')
