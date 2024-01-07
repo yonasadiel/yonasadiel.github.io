@@ -7,18 +7,25 @@
     "start": "next start",
     "export": "next export",
     "lint": "next lint",
-    "deploy": "yarn build && git add -f out && git checkout gh-pages && rm -r _next && rm -r assets && mv out/* . && git add . && git commit -m 'Deploy gh-pages' && git push && git checkout main"
+    "encrypt": "TS_NODE_COMPILER_OPTIONS='{\"isolatedModules\": false}' npx ts-node lib/athena/encrypt.ts",
+    "deploy": "yarn encrypt && yarn build && git add -f out && git checkout gh-pages && rm -r _next && rm -r assets images posts && mv out/* . && git add . && git commit -m 'Deploy gh-pages' && git push && git checkout main"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/joy": "^5.0.0-beta.21",
+    "crypto": "^1.0.1",
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.1",
-    "sass": "^1.49.0"
+    "sass": "^1.49.0",
+    "use-persisted-state": "^0.3.3"
   },
   "devDependencies": {
     "@types/node": "17.0.13",
     "@types/react": "^18.2.46",
+    "@types/use-persisted-state": "^0.3.4",
     "autoprefixer": "^10.4.16",
     "eslint": "8.7.0",
     "eslint-config-next": "12.0.9",
