@@ -25,7 +25,7 @@ async function encryptFile(inputFilePath: string, outputFilePath: string): Promi
   let iv: Buffer | null = null;
   let userKeys: { [suffix: string]: string }= {};
   for await (const line of rl) {
-    if (line.trim() === '') {
+    if (!startEncrypting && line.trim() === '') {
       // Set startEncrypting to true when an empty line is encountered
       startEncrypting = true;
       continue; // Skip the empty line
