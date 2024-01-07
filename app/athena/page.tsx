@@ -72,7 +72,7 @@ const Athena = () => {
   const handleNewPassword = (password: string | null) => {
     setIsPasswordModalOpen(false)
     if (!!password) {
-      setAthena({ ...athena, userKeys: [...athena.userKeys, password].filter((v, i, a) => a.indexOf(v) === i) })
+      setAthena({ ...athena, userKeys: [...(athena.userKeys || []), password].filter((v, i, a) => a.indexOf(v) === i) })
     }
   }
   return (
@@ -145,6 +145,7 @@ const Post = (props: PostProps) => {
   const { post, userKeys, onUnlockPost } = props;
   const [actualContent, locked] = useMemo(() => {
     if (!!post.meta.iv) {
+      if (!userKeys) return ['', true]
       for (let i = 0; i < userKeys.length; i++) {
         const key = decryptKey(post.meta, userKeys[i])
         if (!!key) return [decryptPost(post.content, post.meta, key), false]
