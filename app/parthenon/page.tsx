@@ -1,7 +1,8 @@
+'use client'
+
 import type { NextPage } from 'next'
 import Head from 'next/head';
 import { Fragment, useCallback, useEffect, useState } from 'react'
-import styles from './index.module.scss';
 import { InstanceStatus, ServerData } from '../../lib/parthenon/types';
 import { getAccessToken } from '../../lib/parthenon/auth';
 import {
@@ -10,6 +11,7 @@ import {
   startInstance,
   stopInstance,
 } from '../../lib/parthenon/instances';
+import styles from './styles.module.scss';
 
 const SERVER_DATA_KEY = "parthenon_server_data"
 
@@ -139,10 +141,6 @@ const Parthenon: NextPage = () => {
     <div className={styles.parthenon}>
       <Head>
         <title>Parthenon</title>
-        <link rel="icon" type="image/x-icon" href="/assets/favicon-32.ico" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"></link>
       </Head>
       <div className={styles.box}>
         <h1>Parthenon</h1>
