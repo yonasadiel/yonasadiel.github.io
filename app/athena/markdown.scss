@@ -1,0 +1,28 @@
+.md {
+  p { margin-bottom: 1em; width: 100%; }
+  a { text-decoration: underline; }
+
+  .media {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    .images {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 5px;
+
+      > * {
+        max-height: 10em;
+        @media (min-width: 768px) { max-height: 15em; }
+      }
+      // video { display: none; }
+    }
+    small { text-align: center; }
+  }
+}

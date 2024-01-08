@@ -4,11 +4,13 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import Markdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 import { FormLabel, Modal, ModalDialog, Input, Button } from '@mui/joy'
 import { useDelayed } from '../../lib/hooks'
 import { decryptKey, decryptPost } from '../../lib/athena/decrypt'
 import { useAthenaState } from '../../lib/athena/state'
 import styles from './styles.module.scss'
+import './markdown.scss'
 
 type Post = {
   title: string
@@ -161,7 +163,9 @@ const Post = (props: PostProps) => {
       <small className="text-neutral-400">{formatDate(post.date)} | {post.meta?.category || ''}</small>
       <div className="mb-2"/>
       <div className="relative place-content-center">
-        <Markdown className={`${styles.md} ${locked ? styles.locked : ''}`}>
+        <Markdown
+          className={`${styles.md} md ${locked ? styles.locked : ''}`}
+          rehypePlugins={[rehypeRaw]}>
           {locked
             ? 'Maxime voluptas provident quam voluptatem sit. Corporis nam rerum debitis. ' +
               'Iure minus iusto nisi minus quisquam expedita. Et doloribus rerum et praesentium et reiciendis deleniti. ' +

@@ -48,10 +48,6 @@
   }
 
   .md {
-    p { margin-bottom: 1em; }
-    a { text-decoration: underline; }
-    img { max-height: 20em; margin: auto; }
-
     &.locked { filter: blur(5px) }
   }
   .lockBox {
