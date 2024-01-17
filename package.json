@@ -8,7 +8,7 @@
     "export": "next export",
     "lint": "next lint",
     "encrypt": "TS_NODE_COMPILER_OPTIONS='{\"isolatedModules\": false}' npx ts-node lib/athena/encrypt.ts",
-    "deploy": "MSG=$(git log -1 --pretty=%B); yarn encrypt && yarn build && git add -f out && git checkout gh-pages && rm -r _next && rm -r assets images posts && mv out/* . && git add . && git commit -m \"$MSG\" && git push && git checkout main"
+    "deploy": "MSG=$(git log -1 --pretty=%B); yarn encrypt && yarn build && git add -f out && git checkout gh-pages && for e in out/*; do if [ -d \"$e\" ]; then rm -r \"${e:4}\"; fi; done && mv out/* . && git add . && git commit -m \"$MSG\" && git push && git checkout main"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
