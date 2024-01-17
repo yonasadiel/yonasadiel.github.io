@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import Markdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
+import Link from 'next/link'
 import { decryptKey, decryptPost } from '../../lib/athena/decrypt'
 import { Post } from '../../lib/athena/post'
 import styles from './styles.module.scss'
@@ -32,7 +33,7 @@ const Post = (props: PostProps) => {
 
   return (
     <div className={`pt-8 pb-2 ${styles.post} border-teal-800/50`} id={post.slug}>
-      <h2 className="text-2xl font-bold">{post.title}</h2>
+      <Link href={`/athena?slug=${post.slug}`}><h2 className="text-2xl font-bold">{post.title}</h2></Link>
       <small className="text-neutral-400">{formatDate(post.date)} | {post.meta?.category || ''}</small>
       <div className="mb-2"/>
       <div className="relative place-content-center">

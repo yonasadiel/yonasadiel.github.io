@@ -1,7 +1,8 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { useDelayed } from '../../lib/hooks'
 import { useAthenaState } from '../../lib/athena/state'
 import { Post } from '../../lib/athena/post'
@@ -57,6 +58,8 @@ const Athena = () => {
   const postsToShow = (!!slug ? allPosts?.filter((p) => p.slug === slug) : allPosts) || []
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState<boolean>(false);
 
+  useEffect(() => setNav(NAV_POST), [slug])
+
   const postProps = { userKeys: athena.userKeys, onUnlockPost: () => setIsPasswordModalOpen(true) }
   const handleNewPassword = (password: string | null) => {
     setIsPasswordModalOpen(false)
@@ -83,10 +86,14 @@ const Athena = () => {
       </div>
       <div className={`${styles.container} ${styles.body} mx-auto`}>
         <div className={`${styles.main} block lg:hidden`}>
-          {nav === NAV_POST && postsToShow.map((p) => <PostComponent key={p.slug} post={p} {...postProps} />)}
+          {nav === NAV_POST && <>
+            {!!slug && (<Link href="/athena"><div className="mt-5 underline">&lt;- Kembali</div></Link>)}
+            {postsToShow.map((p) => <PostComponent key={p.slug} post={p} {...postProps} />)}
+          </>}
           {nav === NAV_INDEX && <Index allPosts={allPosts} />}
         </div>
         <div className={`${styles.main} hidden lg:block`}>
+          {!!slug && (<Link href="/athena"><div className="mt-5">&lt; Lihat semua</div></Link>)}
           {postsToShow.map((p) => <PostComponent key={p.slug} post={p} {...postProps} />)}
         </div>
         <div className={`${styles.side} hidden lg:block`}>
