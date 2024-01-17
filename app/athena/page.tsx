@@ -1,24 +1,14 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import Link from 'next/link'
-import { useMemo, useState } from 'react'
-import Markdown from 'react-markdown'
-import rehypeRaw from 'rehype-raw'
-import { FormLabel, Modal, ModalDialog, Input, Button } from '@mui/joy'
+import { useState } from 'react'
 import { useDelayed } from '../../lib/hooks'
-import { decryptKey, decryptPost } from '../../lib/athena/decrypt'
 import { useAthenaState } from '../../lib/athena/state'
+import { Post } from '../../lib/athena/post'
+import Index from './_Index'
+import PostComponent from './_Post'
+import PasswordModal from './_PasswordModal'
 import styles from './styles.module.scss'
-import './markdown.scss'
-
-type Post = {
-  title: string
-  date: Date
-  slug: string
-  meta: { [key: string]: string }
-  content: string // markdown
-}
 
 type PostIndex = { list: string[] }
 
@@ -54,9 +44,6 @@ const parsePost = (postContent: string): Post => {
 
   return post
 }
-
-const month = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des']
-const formatDate = (date: Date): string =>  `${date.getDate()} ${month[date.getMonth()]} ${date.getFullYear()}`
 
 const NAV_POST = 'post'
 const NAV_INDEX = 'index'
@@ -96,121 +83,17 @@ const Athena = () => {
       </div>
       <div className={`${styles.container} ${styles.body} mx-auto`}>
         <div className={`${styles.main} block lg:hidden`}>
-          {nav === NAV_POST && postsToShow.map((p) => <Post key={p.slug} post={p} {...postProps} />)}
+          {nav === NAV_POST && postsToShow.map((p) => <PostComponent key={p.slug} post={p} {...postProps} />)}
           {nav === NAV_INDEX && <Index allPosts={allPosts} />}
         </div>
         <div className={`${styles.main} hidden lg:block`}>
-          {postsToShow.map((p) => <Post key={p.slug} post={p} {...postProps} />)}
+          {postsToShow.map((p) => <PostComponent key={p.slug} post={p} {...postProps} />)}
         </div>
         <div className={`${styles.side} hidden lg:block`}>
           <Index allPosts={allPosts} />
         </div>
       </div>
     </main>
-  )
-}
-
-interface IndexProps {
-  allPosts: Post[]
-}
-
-const Index = (props: IndexProps) => {
-  const { allPosts } = props;
-  const postsByYear: { [year: string]: Post[] } = {}
-  for (let i = 0; i < allPosts.length; i++) {
-    const year = allPosts[i].date.getFullYear()
-    if (!(year in postsByYear)) { postsByYear[year] = [] }
-    postsByYear['' + allPosts[i].date.getFullYear()].push(allPosts[i])
-  }
-  return (
-    <div className="pt-8">
-      {Object.keys(postsByYear)
-        .map((year) => ({ year: year, posts: postsByYear[year] }))
-        .sort((a, b) => a.year < b.year ? 1 : -1)
-        .map((pl) => (
-          <div key={pl.year} className="pb-3">
-            <h4 className="font-bold">{pl.year}</h4>
-            <div>
-              {pl.posts.sort((a, b) => a.date < b.date ? 1 : -1).map((p) =>
-                <Link href={`/athena?slug=${p.slug}`} className="block hover:underline mb-3" key={p.slug}>{p.title}</Link>
-              )}
-            </div>
-          </div>
-        ))}
-    </div>
-  );
-}
-
-interface PostProps {
-  post: Post
-  userKeys: string[]
-  onUnlockPost: () => void
-}
-
-const Post = (props: PostProps) => {
-  const { post, userKeys, onUnlockPost } = props;
-  const [actualContent, locked] = useMemo(() => {
-    if (!!post.meta.iv) {
-      if (!userKeys) return ['', true]
-      for (let i = 0; i < userKeys.length; i++) {
-        const key = decryptKey(post.meta, userKeys[i])
-        if (!!key) return [decryptPost(post.content, post.meta, key), false]
-      }
-      return ['', true]
-    }
-    return [post.content, false]
-  }, [post.meta, userKeys])
-
-  return (
-    <div className={`pt-8 pb-2 ${styles.post} border-teal-800/50`} id={post.slug}>
-      <h2 className="text-xl font-bold">{post.title}</h2>
-      <small className="text-neutral-400">{formatDate(post.date)} | {post.meta?.category || ''}</small>
-      <div className="mb-2"/>
-      <div className="relative place-content-center">
-        <Markdown
-          className={`${styles.md} md ${locked ? styles.locked : ''}`}
-          rehypePlugins={[rehypeRaw]}>
-          {locked
-            ? 'Maxime voluptas provident quam voluptatem sit. Corporis nam rerum debitis. ' +
-              'Iure minus iusto nisi minus quisquam expedita. Et doloribus rerum et praesentium et reiciendis deleniti. ' +
-              'Laboriosam maiores incidunt minus. Facere qui atque vitae fugiat ipsam sint sequi perspiciatis. ' +
-              'Velit repudiandae et eligendi nihil quas dolorum non. ' +
-              'Deleniti iusto omnis minus soluta accusantium corporis quis inventore. '+
-              'Repellat aliquid nesciunt a temporibus qui amet tenetur ratione. Modi consequatur rerum qui culpa ea et. ' +
-              'Dolorem cumque aliquid sequi et autem aliquid. Vel sed aut aliquid est repudiandae omnis. Odit officiis non sint. ' +
-              'Nisi qui consequatur sunt. Explicabo inventore impedit sed est. Voluptate sed porro optio. ' +
-              'Dolores eligendi culpa est vitae et placeat magni vero. Molestias nisi dolorum quo quasi.'
-            : actualContent}
-        </Markdown>
-        {locked && (
-          <div className={`absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center`}>
-            <div className={`${styles.lockBox} rounded py-2 px-4 flex flex-col justify-center items-center`}>
-              <p>This post is password locked</p>
-              <button type="button" className="bg-teal-700 text-white py-1 px-3 rounded" onClick={onUnlockPost}>Unlock</button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-interface PasswordModalProps {
-  isOpen: boolean
-  onSubmit: (password: string | null) => void
-}
-
-const PasswordModal = (props: PasswordModalProps) => {
-  const { isOpen, onSubmit } = props
-  const [password, setPassword] = useState('')
-  return (
-    <Modal open={isOpen} onClose={() => onSubmit(null)}>
-      <ModalDialog>
-        <FormLabel>Password</FormLabel>
-        <Input onChange={(e) => setPassword(e.currentTarget.value)} autoFocus />
-        <Button onClick={() => onSubmit(password)}>Submit</Button>
-      </ModalDialog>
-    </Modal>
   )
 }
 
