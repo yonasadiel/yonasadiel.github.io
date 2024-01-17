@@ -3,14 +3,14 @@
 import type { NextPage } from 'next'
 import Head from 'next/head';
 import { Fragment, useCallback, useEffect, useState } from 'react'
-import { InstanceStatus, ServerData } from '../../lib/parthenon/types';
-import { getAccessToken } from '../../lib/parthenon/auth';
+import { InstanceStatus, ServerData } from 'lib/parthenon/types';
+import { getAccessToken } from 'lib/parthenon/auth';
 import {
   TERMINATED, RUNNING,
   getInstance,
   startInstance,
   stopInstance,
-} from '../../lib/parthenon/instances';
+} from 'lib/parthenon/instances';
 import styles from './styles.module.scss';
 
 const SERVER_DATA_KEY = "parthenon_server_data"

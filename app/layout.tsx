@@ -32,7 +32,7 @@ const theme = extendTheme({
   },
 });
 
-const Olympus = ({ children }: { children: React.ReactNode }) => {
+const OlympusLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html className={`${roboto.className}`}>
       <head>
@@ -47,4 +47,4 @@ const Olympus = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export default Olympus
+export default OlympusLayout

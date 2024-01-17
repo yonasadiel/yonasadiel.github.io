@@ -1,39 +1,50 @@
-import { useMemo } from 'react'
+'use client'
+
+import { useMemo, useState } from 'react'
 import Markdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import Link from 'next/link'
-import { decryptKey, decryptPost } from '../../lib/athena/decrypt'
-import { Post } from '../../lib/athena/post'
-import styles from './styles.module.scss'
-import './markdown.scss'
+import { decryptKey, decryptPost } from 'lib/athena/decrypt'
+import { useAthenaState } from 'lib/athena/state'
+import { Post } from 'lib/athena/post'
+import PasswordModal from './PasswordModal'
+import styles from './Post.module.scss'
+import './Post.scss'
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des']
 const formatDate = (date: Date): string =>  `${date.getDate()} ${month[date.getMonth()]} ${date.getFullYear()}`
 
 interface PostProps {
   post: Post
-  userKeys: string[]
-  onUnlockPost: () => void
 }
 
-const Post = (props: PostProps) => {
-  const { post, userKeys, onUnlockPost } = props;
+const PostComponent = (props: PostProps) => {
+  const { post } = props;
+  const [athena, setAthena] = useAthenaState({ userKeys: [] })
   const [actualContent, locked] = useMemo(() => {
     if (!!post.meta.iv) {
-      if (!userKeys) return ['', true]
-      for (let i = 0; i < userKeys.length; i++) {
-        const key = decryptKey(post.meta, userKeys[i])
+      if (!athena.userKeys) return ['', true]
+      for (let i = 0; i < athena.userKeys.length; i++) {
+        const key = decryptKey(post.meta, athena.userKeys[i])
         if (!!key) return [decryptPost(post.content, post.meta, key), false]
       }
       return ['', true]
     }
     return [post.content, false]
-  }, [post.meta, userKeys])
+  }, [post.meta, athena.userKeys])
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState<boolean>(false);
+  const handleNewPassword = (password: string | null) => {
+    setIsPasswordModalOpen(false)
+    if (!!password) {
+      setAthena({ ...athena, userKeys: [...(athena.userKeys || []), password].filter((v, i, a) => a.indexOf(v) === i) })
+    }
+  }
 
   return (
     <div className={`pt-8 pb-2 ${styles.post} border-teal-800/50`} id={post.slug}>
-      <Link href={`/athena?slug=${post.slug}`}><h2 className="text-2xl font-bold">{post.title}</h2></Link>
+      <PasswordModal isOpen={isPasswordModalOpen} onSubmit={handleNewPassword} />
+      <Link href={`/athena/post/${post.slug}`}><h2 className="text-2xl font-bold">{post.title}</h2></Link>
       <small className="text-neutral-400">{formatDate(post.date)} | {post.meta?.category || ''}</small>
       <div className="mb-2"/>
       <div className="relative place-content-center">
@@ -57,7 +68,7 @@ const Post = (props: PostProps) => {
           <div className={`absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center`}>
             <div className={`${styles.lockBox} rounded py-2 px-4 flex flex-col justify-center items-center`}>
               <p>This post is password locked</p>
-              <button type="button" className="bg-teal-700 text-white py-1 px-3 rounded" onClick={onUnlockPost}>Unlock</button>
+              <button type="button" className="bg-teal-700 text-white py-1 px-3 rounded" onClick={() => setIsPasswordModalOpen(true)}>Unlock</button>
             </div>
           </div>
         )}
@@ -66,4 +77,4 @@ const Post = (props: PostProps) => {
   )
 }
 
-export default Post
+export default PostComponent

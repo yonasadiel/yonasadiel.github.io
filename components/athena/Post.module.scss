@@ -1,0 +1,11 @@
+.post {
+  border-bottom-width: 0.1px;
+  .lockBox {
+    max-width: 50%;
+    background: white;
+    box-shadow: 0px 2px 8px 2px rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  }
+  .md {
+    &.locked { filter: blur(5px) }
+  }
+}

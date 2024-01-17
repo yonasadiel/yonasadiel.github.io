@@ -1,12 +1,9 @@
+import { use } from 'react'
 import Link from 'next/link'
-import { Post } from '../../lib/athena/post'
+import { Post, readAllPosts } from 'lib/athena/post'
 
-interface IndexProps {
-  allPosts: Post[]
-}
-
-const Index = (props: IndexProps) => {
-  const { allPosts } = props;
+const Index = () => {
+  const allPosts = use(readAllPosts())
   const postsByYear: { [year: string]: Post[] } = {}
   for (let i = 0; i < allPosts.length; i++) {
     const year = allPosts[i].date.getFullYear()
@@ -23,7 +20,7 @@ const Index = (props: IndexProps) => {
             <h4 className="font-bold">{pl.year}</h4>
             <div>
               {pl.posts.sort((a, b) => a.date < b.date ? 1 : -1).map((p) =>
-                <Link href={`/athena?slug=${p.slug}`} className="block hover:underline mb-3" key={p.slug}>{p.title}</Link>
+                <Link href={`/athena/post/${p.slug}`} className="block hover:underline mb-3" key={p.slug}>{p.title}</Link>
               )}
             </div>
           </div>
