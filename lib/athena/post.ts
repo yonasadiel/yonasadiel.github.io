@@ -37,7 +37,7 @@ const readDir = (path: fs.PathLike) =>
 const readFile = (fileName: fs.PathOrFileDescriptor) =>
   new Promise<string>((resolve, reject) => fs.readFile(fileName, {}, (err, data) => !!err ? reject(err) : resolve(data.toString('utf8'))))
 
-const postDir = 'public/posts/'
+const postDir = 'data/posts/'
 export const readAllPosts = () => readDir(postDir)
   .then((fileNames) => Promise.all(fileNames.map((fileName) => readFile(postDir + fileName))))
   .then((fileContents) => fileContents.map(parsePost).sort((a, b) => a.date < b.date ? 1 : -1))

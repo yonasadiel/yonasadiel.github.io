@@ -50,26 +50,28 @@ async function encryptFile(inputFilePath: string, outputFilePath: string): Promi
     }
   }
 
-  if (key === '') throw 'key not found';
-  if (iv === null) throw 'iv not found';
+  if (!!key && !!iv) {
+    const encryptedKeys = Object.keys(userKeys).map((suffix) => {
+      let userKey = userKeys[suffix]
+      while (userKey.length < 32) userKey += userKeys[suffix]
+      userKey = userKey.substring(0, 32)
+      const cipher = _crypto.createCipheriv('aes-256-cbc', Buffer.from(userKey, 'utf-8'), iv);
+      const encryptedBuffer = Buffer.concat([cipher.update(Buffer.from(key, 'utf-8')), cipher.final()]);
+      const encryptedBase64 = encryptedBuffer.toString('base64');
+      outputWriteStream.write('l2-key-' + suffix + ': ' + encryptedBase64 + '\n')
+    })
 
-  const encryptedKeys = Object.keys(userKeys).map((suffix) => {
-    let userKey = userKeys[suffix]
-    while (userKey.length < 32) userKey += userKeys[suffix]
-    userKey = userKey.substring(0, 32)
-    const cipher = _crypto.createCipheriv('aes-256-cbc', Buffer.from(userKey, 'utf-8'), iv);
-    const encryptedBuffer = Buffer.concat([cipher.update(Buffer.from(key, 'utf-8')), cipher.final()]);
+    // Encrypt the concatenated content and store it as base64 along with the IV
+    outputWriteStream.write('iv: ' + iv.toString('hex') + '\n')
+    outputWriteStream.write('\n')
+    const cipher = _crypto.createCipheriv('aes-256-cbc', Buffer.from(key, 'utf-8'), iv);
+    const encryptedBuffer = Buffer.concat([cipher.update(Buffer.from(contentToEncrypt, 'utf-8')), cipher.final()]);
     const encryptedBase64 = encryptedBuffer.toString('base64');
-    outputWriteStream.write('l2-key-' + suffix + ': ' + encryptedBase64 + '\n')
-  })
-
-  // Encrypt the concatenated content and store it as base64 along with the IV
-  outputWriteStream.write('iv: ' + iv.toString('hex') + '\n')
-  outputWriteStream.write('\n')
-  const cipher = _crypto.createCipheriv('aes-256-cbc', Buffer.from(key, 'utf-8'), iv);
-  const encryptedBuffer = Buffer.concat([cipher.update(Buffer.from(contentToEncrypt, 'utf-8')), cipher.final()]);
-  const encryptedBase64 = encryptedBuffer.toString('base64');
-  outputWriteStream.write(encryptedBase64 + '\n');
+    outputWriteStream.write(encryptedBase64 + '\n');
+  } else {
+    outputWriteStream.write('\n')
+    outputWriteStream.write(contentToEncrypt)
+  }
 
   // Close the streams
   inputReadStream.close();
@@ -83,7 +85,7 @@ async function encryptFilesInDirectory(inputDirectory: string, outputDirectory: 
 
     for (const file of files) {
       const inputFilePath = path.join(inputDirectory, file);
-      const outputFilePath = path.join(outputDirectory, file + '.encrypted');
+      const outputFilePath = path.join(outputDirectory, file);
 
       await encryptFile(inputFilePath, outputFilePath);
 
@@ -94,8 +96,8 @@ async function encryptFilesInDirectory(inputDirectory: string, outputDirectory: 
   }
 }
 
-const inputDirectory = './data/';
-const outputDirectory = './public/posts/';
+const inputDirectory = './data/posts_plaintext';
+const outputDirectory = './data/posts/';
 
 encryptFilesInDirectory(inputDirectory, outputDirectory)
   .catch((error) => {

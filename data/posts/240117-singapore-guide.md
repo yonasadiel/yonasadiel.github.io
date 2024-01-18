@@ -5,12 +5,13 @@ category : Notes
 **NOTE**: Artikel ini masih work-in-progress. Masih mungkin diupdate lagi. Beberapa bagian pakai bahasa Inggris, karena awalnya ditulis pakai bahasa Inggris.
 
 ## Sebelum Berangkat
-* Isi SG Arrival Card (paling cepet 3 hari sebelum keberangkatan) https://eservices.ica.gov.sg/sgarrivalcard/, gratis
-* Singapore hampir semua cashless, tapi lumayan bawa cash
-* Kalo punya jenius, bisa buka akun SGD biar bisa bayar cashless (dan diset jadi main account)
-  * Kartu Jenius bisa dipake buat MRT, tapi ga bisa bis
+* Isi SG Arrival Card (paling cepet 3 hari sebelum keberangkatan) https://eservices.ica.gov.sg/sgarrivalcard/, gratis.
+* Singapore hampir semua cashless, tapi lumayan bawa cash.
+* Kalo punya jenius, bisa buka akun SGD biar bisa bayar cashless (dan diset jadi main account).
+  * Kartu Jenius bisa dipake buat MRT, tapi ga bisa bis.
   * Kartu lain BCA dll theoritically bisa dipake, tapi berdasar pengalaman, sering tiba2 ga bisa.
-* Singapore di mana-mana listrik pake kaki 3, jadi worth it beli converter
+* Singapore di mana-mana listrik pake kaki 3, jadi worth it beli converter.
+* Pastiin masa habis paspor masih > 6 bulan.
 
 ## Sampai di Bandara
 * Beli kartu SIM di 7-Eleven / Cheers / money changer. Harusnya bisa nemu yang < 20$ (lebih dari ini, overpriced tbh)
