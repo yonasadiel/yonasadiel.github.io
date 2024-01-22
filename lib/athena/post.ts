@@ -8,7 +8,7 @@ export type Post = {
   content: string // markdown
 }
 
-export const slugify = (title: string): string => title.toLowerCase().replaceAll(' ', '-').replaceAll(':', '')
+export const slugify = (title: string): string => title.toLowerCase().replaceAll(' ', '-').replace(/[:,\.!]/g, '')
 
 export const parsePost = (postContent: string): Post => {
   const lines = postContent.split('\n')

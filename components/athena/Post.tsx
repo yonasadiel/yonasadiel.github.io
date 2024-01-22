@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, ReactNode } from 'react'
 import Markdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
@@ -44,14 +44,22 @@ const PostComponent = (props: PostProps) => {
   return (
     <div className={`pt-8 pb-2 ${styles.post} border-teal-800/50`} id={post.slug}>
       <PasswordModal isOpen={isPasswordModalOpen} onSubmit={handleNewPassword} />
-      <Link href={`/athena/post/${post.slug}`}><h2 className="text-2xl font-bold">{post.title}</h2></Link>
+      <Link href={`/athena/post/${post.slug}`}><h1 className="text-2xl font-bold">{post.title}</h1></Link>
       <small className="text-neutral-400">{formatDate(post.date)} | {post.meta?.category || ''}</small>
       <div className="mb-2"/>
       <div className="relative place-content-center">
         <Markdown
           className={`${styles.md} md ${locked ? styles.locked : ''}`}
           remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]}>
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            h1: ({ node, ...rest }) => <h1 id={heading(rest.children)} {...rest} />,
+            h2: ({ node, ...rest }) => <h2 id={heading(rest.children)} {...rest} />,
+            h3: ({ node, ...rest }) => <h3 id={heading(rest.children)} {...rest} />,
+            h4: ({ node, ...rest }) => <h4 id={heading(rest.children)} {...rest} />,
+            h5: ({ node, ...rest }) => <h5 id={heading(rest.children)} {...rest} />,
+            h6: ({ node, ...rest }) => <h6 id={heading(rest.children)} {...rest} />,
+          }}>
           {locked
             ? 'Maxime voluptas provident quam voluptatem sit. Corporis nam rerum debitis. ' +
               'Iure minus iusto nisi minus quisquam expedita. Et doloribus rerum et praesentium et reiciendis deleniti. ' +
@@ -76,5 +84,7 @@ const PostComponent = (props: PostProps) => {
     </div>
   )
 }
+
+const heading = (p: ReactNode) => p?.toString()
 
 export default PostComponent
