@@ -7,7 +7,7 @@ const AthenaPage = async () => {
   return (
     <>
       <title>Athena: Yonas&apos; Blog</title>
-      {allPosts.map((p) => <PostComponent key={p.slug} post={p} />)}
+      {allPosts.map((p) => <PostComponent key={p.slug} post={p} initialCollapsed={true} />)}
     </>
   )
 }

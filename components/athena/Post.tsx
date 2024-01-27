@@ -17,11 +17,13 @@ const formatDate = (date: Date): string =>  `${date.getDate()} ${month[date.getM
 
 interface PostProps {
   post: Post
+  initialCollapsed?: boolean
 }
 
 const PostComponent = (props: PostProps) => {
-  const { post } = props;
+  const { post, initialCollapsed } = props;
   const [athena, setAthena] = useAthenaState({ userKeys: [] })
+  const [collapsed, setCollapsed] = useState(initialCollapsed)
   const [actualContent, locked] = useMemo(() => {
     if (!!post.meta.iv) {
       if (!athena.userKeys) return ['', true]
@@ -42,12 +44,12 @@ const PostComponent = (props: PostProps) => {
   }
 
   return (
-    <div className={`pt-8 pb-2 ${styles.post} border-teal-800/50`} id={post.slug}>
+    <div className={`pt-8 pb-2 ${styles.post} border-teal-800/50 ${collapsed && !locked ? styles.collapsed : ''}`} id={post.slug}>
       <PasswordModal isOpen={isPasswordModalOpen} onSubmit={handleNewPassword} />
       <Link href={`/athena/post/${post.slug}`}><h1 className="text-2xl font-bold">{post.title}</h1></Link>
       <small className="text-neutral-400">{formatDate(post.date)} | {post.meta?.category || ''}</small>
       <div className="mb-2"/>
-      <div className="relative place-content-center">
+      <div className={`${styles.mdContainer} relative place-content-center`}>
         <Markdown
           className={`${styles.md} md ${locked ? styles.locked : ''}`}
           remarkPlugins={[remarkGfm]}
@@ -76,8 +78,18 @@ const PostComponent = (props: PostProps) => {
           <div className={`absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center`}>
             <div className={`${styles.lockBox} rounded py-2 px-4 flex flex-col justify-center items-center`}>
               <p>This post is password locked</p>
-              <button type="button" className="bg-teal-700 text-white py-1 px-3 rounded" onClick={() => setIsPasswordModalOpen(true)}>Unlock</button>
+              <button type="button" className="bg-teal-700 text-white py-1 px-3 rounded hover:bg-teal-600" onClick={() => setIsPasswordModalOpen(true)}>Unlock</button>
             </div>
+          </div>
+        )}
+        {collapsed && !locked && (
+          <div className={`${styles.expandButton} absolute left-0 right-0 flex justify-center items-center`}>
+            <button
+              type="button"
+              onClick={() => setCollapsed(false)}
+              className={`py-1 px-4 bg-teal-700 rounded text-white hover:bg-teal-600`}>
+              Expand
+            </button>
           </div>
         )}
       </div>

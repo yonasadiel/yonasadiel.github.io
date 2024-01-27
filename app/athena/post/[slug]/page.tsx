@@ -14,7 +14,7 @@ const AthenaSingle = async ({ params: { slug } }: { params: { slug: string }}) =
     <>
       <title>{`${post.title} | Athena: Yonas\' Blog`}</title>
       <Link href={ROUTE_ATHENA}><div className="mt-5">&lt; Lihat semua</div></Link>
-      <PostComponent post={post} />
+      <PostComponent post={post} initialCollapsed={false} />
     </>
   )
 }
