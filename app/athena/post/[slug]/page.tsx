@@ -13,7 +13,7 @@ const AthenaSingle = async ({ params: { slug } }: { params: { slug: string }}) =
   return (
     <>
       <title>{`${post.title} | Athena: Yonas\' Blog`}</title>
-      <Link href={ROUTE_ATHENA}><div className="mt-5">&lt; Lihat semua</div></Link>
+      <Link passHref href={ROUTE_ATHENA}><div className="mt-5">&lt; Lihat semua</div></Link>
       <PostComponent post={post} initialCollapsed={false} />
     </>
   )

@@ -46,7 +46,7 @@ const PostComponent = (props: PostProps) => {
   return (
     <div className={`pt-8 pb-2 ${styles.post} border-teal-800/50 ${collapsed && !locked ? styles.collapsed : ''}`} id={post.slug}>
       <PasswordModal isOpen={isPasswordModalOpen} onSubmit={handleNewPassword} />
-      <Link href={`/athena/post/${post.slug}`}><h1 className="text-2xl font-bold">{post.title}</h1></Link>
+      <Link passHref href={`/athena/post/${post.slug}`}><h1 className="text-2xl font-bold">{post.title}</h1></Link>
       <small className="text-neutral-400">{formatDate(post.date)} | {post.meta?.category || ''}</small>
       <div className="mb-2"/>
       <div className={`${styles.mdContainer} relative place-content-center`}>

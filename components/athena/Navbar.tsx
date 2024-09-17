@@ -31,7 +31,7 @@ interface NavItemProps {
 }
 
 const NavItem = ({ active, to, title }: NavItemProps) => (
-  <Link href={to}>
+  <Link passHref href={to}>
     <div className={`py-2 px-4 ${active
         ? 'bg-teal-100 border-b-2 border-teal-800'
         : 'hover:bg-teal-50 cursor-pointer'}`}>

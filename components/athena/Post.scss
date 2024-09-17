@@ -15,6 +15,7 @@
     td {
       padding: 4px 8px;
       border: 1px solid black;
+      p { margin: 0 }
     }
   }
 
@@ -41,4 +42,9 @@
     }
     small { text-align: center; }
   }
+}
+
+// Post-specific styling
+#parpol table tr td:first-child {
+  min-width: 200px;
 }

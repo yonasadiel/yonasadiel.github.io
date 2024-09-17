@@ -1,17 +1,18 @@
 'use client'
 
 import type { NextPage } from 'next'
-import Head from 'next/head';
+import Head from 'next/head'
+import Image from 'next/image'
 import { Fragment, useCallback, useEffect, useState } from 'react'
-import { InstanceStatus, ServerData } from 'lib/parthenon/types';
-import { getAccessToken } from 'lib/parthenon/auth';
+import { InstanceStatus, ServerData } from 'lib/parthenon/types'
+import { getAccessToken } from 'lib/parthenon/auth'
 import {
   TERMINATED, RUNNING,
   getInstance,
   startInstance,
   stopInstance,
-} from 'lib/parthenon/instances';
-import styles from './styles.module.scss';
+} from 'lib/parthenon/instances'
+import styles from './styles.module.scss'
 
 const SERVER_DATA_KEY = "parthenon_server_data"
 
@@ -117,7 +118,7 @@ const Manager: NextPage = () => {
           : "Checking status..."
         }
         <button className={`${styles.reload} ${isIdle ? styles.loading : ""}`} type="button" onClick={updateInstanceStatus}>
-          <img className={`${!isIdle ? styles.loading : " "}`} src="/assets/reload.png" />
+          <Image alt="reload" className={`${!isIdle ? styles.loading : " "}`} src="/assets/reload.png" />
         </button>
       </div>
       <p>Last updated: {lastUpdated.toLocaleDateString() + " " + lastUpdated.toLocaleTimeString()}</p>

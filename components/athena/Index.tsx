@@ -20,7 +20,7 @@ const Index = () => {
             <h4 className="font-bold">{pl.year}</h4>
             <div>
               {pl.posts.sort((a, b) => a.date < b.date ? 1 : -1).map((p) =>
-                <Link href={`/athena/post/${p.slug}`} className="block hover:underline mb-3" key={p.slug}>{p.title}</Link>
+                <Link passHref href={`/athena/post/${p.slug}`} className="block hover:underline mb-3" key={p.slug}>{p.title}</Link>
               )}
             </div>
           </div>
