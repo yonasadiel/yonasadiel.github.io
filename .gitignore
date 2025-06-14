@@ -37,5 +37,6 @@ yarn-error.log*
 *.tsbuildinfo
 
 posts_plaintext
+hecate-notes
 
 .vscode
