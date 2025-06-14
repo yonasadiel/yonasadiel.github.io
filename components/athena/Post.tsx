@@ -76,9 +76,9 @@ const PostComponent = (props: PostProps) => {
         </Markdown>
         {locked && (
           <div className={`absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center`}>
-            <div className={`${styles.lockBox} rounded py-2 px-4 flex flex-col justify-center items-center`}>
+            <div className={`${styles.lockBox} rounded-sm py-2 px-4 flex flex-col justify-center items-center`}>
               <p>This post is password locked</p>
-              <button type="button" className="bg-teal-700 text-white py-1 px-3 rounded hover:bg-teal-600" onClick={() => setIsPasswordModalOpen(true)}>Unlock</button>
+              <button type="button" className="bg-teal-700 text-white py-1 px-3 rounded-sm hover:bg-teal-600" onClick={() => setIsPasswordModalOpen(true)}>Unlock</button>
             </div>
           </div>
         )}
@@ -87,7 +87,7 @@ const PostComponent = (props: PostProps) => {
             <button
               type="button"
               onClick={() => setCollapsed(false)}
-              className={`py-1 px-4 bg-teal-700 rounded text-white hover:bg-teal-600`}>
+              className={`py-1 px-4 bg-teal-700 rounded-sm text-white hover:bg-teal-600`}>
               Expand
             </button>
           </div>

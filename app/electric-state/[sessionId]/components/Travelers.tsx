@@ -35,7 +35,7 @@ export default function Travelers({ travelerName, travelers }: TravelersProps) {
         <h2 className="text-2xl font-bold">{currentTraveler.name} {(currentTraveler.name === travelerName ? '(You)' : '')}</h2>
       </div>
       <div className="space-y-6">
-        <div key={currentTraveler.name} className="border-b pb-4">
+        <div key={currentTraveler.name} className="pb-4">
           
           <div className="mb-6">
             <h3 className="text-lg font-semibold mb-2">Basic Info</h3>
@@ -50,7 +50,7 @@ export default function Travelers({ travelerName, travelers }: TravelersProps) {
               {(['str', 'agi', 'wit', 'emp'] as (keyof Stats)[]).map((s) => (
                 <div className="p-2 border-4 border-black text-center" key={s}>
                   <p className="mb-1"><strong>{s.toUpperCase()}</strong></p>
-                  <p className="mb-0">{currentTraveler.stats[s]}</p>
+                  <p className="mb-0 text-xl">{currentTraveler.stats[s]}</p>
                 </div>
               ))}
             </div>
