@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
-import HecatePage from './HecatePage';
+import { Suspense } from 'react';
+import HecateClientPage from './HecateClientPage';
+import HecateServerPage from './HecateServerPage';
 import { convertSessionIdToTitle } from './lib';
 
 export async function generateStaticParams() {
@@ -14,5 +16,11 @@ export async function generateMetadata({ params: { sessionId } }: { params: { se
 }
 
 export default function Page({ params: { sessionId } }: { params: { sessionId: string }}) {
-  return <HecatePage sessionId={sessionId} />;
+  return (
+    <>
+      <Suspense fallback={<HecateServerPage sessionId={sessionId} travelerName={null} token={null} />}>
+        <HecateClientPage sessionId={sessionId} />
+      </Suspense>
+    </>
+  );
 }

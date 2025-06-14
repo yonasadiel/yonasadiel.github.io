@@ -1,7 +1,6 @@
 'use client';
 
 import { Open_Sans } from 'next/font/google';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Book from './components/Book';
 import WelcomePage from './components/WelcomePage';
@@ -11,21 +10,20 @@ import { SessionData } from './lib/type';
 import styles from './styles.module.scss';
 
 interface HecatePageProps {
-  sessionId: string;
+  sessionId: string
+  travelerName: string | null
+  token: string | null
 }
 
 const openSans = Open_Sans({
   subsets: ['latin'],
 })
 
-export default function HecatePage({ sessionId }: HecatePageProps) {
+export default function HecateServerPage({ sessionId, travelerName, token }: HecatePageProps) {
   const [showBook, setShowBook] = useState(false);
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const searchParams = useSearchParams();
-  const travelerName = searchParams.get('name');
-  const token = searchParams.get('token');
 
   useEffect(() => {
     if (!travelerName || !token) {

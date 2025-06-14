@@ -8,6 +8,7 @@ export interface MapProps {
 }
 export default function MapPage({ maps }: MapProps) {
   const [selectedMap, setSelectedMap] = useState<string>(maps[0].title)
+  const mapUrl = maps.find((m) => m.title === selectedMap)?.url || ''
   return (
     <div className="p-2 h-full flex flex-col justify-center items-center">
       <div className="flex-0 mt-4">
@@ -21,7 +22,7 @@ export default function MapPage({ maps }: MapProps) {
         </h3>
       </div>
       <div className="flex-1 flex justify-center items-center">
-        <img src={maps.find((m) => m.title === selectedMap)?.url} />
+        {!!mapUrl && (<img src={mapUrl} alt={`Map of ${selectedMap}`} />)}
       </div>
     </div>
   )
