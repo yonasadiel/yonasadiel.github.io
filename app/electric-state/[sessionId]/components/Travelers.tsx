@@ -110,7 +110,7 @@ export default function Travelers({ travelerName, travelers }: TravelersProps) {
             <h3 className="text-lg font-semibold mb-2">Tensions</h3>
             <div className="grid grid-cols-1 gap-4">
               {Object.keys(currentTraveler.state.tensions).map((otherTravelerName) => (
-                <div key={otherTravelerName} className="bg-gray-50 p-3 rounded">
+                <div key={otherTravelerName} className="bg-gray-50 p-3 rounded" onClick={() => setCurrentTravelerName(otherTravelerName)}>
                   <p className="font-semibold mb-1">{otherTravelerName}</p>
                   <p className="text-sm text-gray-600">{currentTraveler.state.tensions[otherTravelerName].num}</p>
                   <p className="text-sm text-gray-600">{currentTraveler.state.tensions[otherTravelerName].description}</p>

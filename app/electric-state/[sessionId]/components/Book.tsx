@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Map from '../components/Map'
-import Story from '../components/Story'
-import Travelers from '../components/Travelers'
 import { SessionData } from '../lib/type'
 import styles from './Book.module.scss'
+import Map from './Map'
+import Story from './Story'
+import Travelers from './Travelers'
 
 interface BookProps {
   sessionId: string
