@@ -32,6 +32,11 @@ export default function HecatePage({ sessionId }: HecatePageProps) {
     }
     getSessionData(sessionId, travelerName || '', token || '')
       .then(data => {
+        if (!('title' in data)) {
+          setError('Failed fetching session data.')
+          setLoading(false)
+          return
+        }
         setSessionData(data)
         setLoading(false)
       })

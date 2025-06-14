@@ -45,7 +45,11 @@ export default function Book(props: BookProps) {
   return (
     <div className={styles.book}>
       <div className={styles.content}>
-        {renderContent()}
+        <div className={styles.page}>
+          {renderContent()}
+        </div>
+        <div className={`${styles.page} ${styles.other1}`} />
+        <div className={`${styles.page} ${styles.other2}`} />
       </div>
       <div className={styles.bookmarks}>
         {BOOKMARKS.map((b) => (
