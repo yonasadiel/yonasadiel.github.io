@@ -38,26 +38,36 @@ export default function Travelers({ travelerName, travelers }: TravelersProps) {
         <div key={currentTraveler.name} className="pb-4">
           
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-2">Basic Info</h3>
+            <div className="flex flex-row justify-center items-center mb-2">
+              <h3 className="text-lg font-semibold whitespace-nowrap">Basic Info</h3>
+              <span className="ml-3 w-full h-0 border-b-4 border-black" />
+            </div>
             <p className="mb-0"><strong>Archetype:</strong> {currentTraveler.archetype}</p>
             <p className="mb-0"><strong>Dream:</strong> {currentTraveler.dream}</p>
             <p className="mb-0"><strong>Flaw:</strong> {currentTraveler.flaw}</p>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-2">Stats</h3>
+            <div className="flex flex-row justify-center items-center mb-2">
+              <h3 className="text-lg font-semibold whitespace-nowrap">Stats</h3>
+              <span className="ml-3 w-full h-0 border-b-4 border-black" />
+            </div>
             <div className="grid grid-cols-4 gap-2">
               {(['str', 'agi', 'wit', 'emp'] as (keyof Stats)[]).map((s) => (
                 <div className="p-2 border-4 border-black text-center" key={s}>
                   <p className="mb-1"><strong>{s.toUpperCase()}</strong></p>
                   <p className="mb-0 text-xl">{currentTraveler.stats[s]}</p>
+                  {!!currentTraveler.state.statsModifier[s] && (<small className="mb-0 text-sm text-gray-600">({currentTraveler.state.statsModifier[s]})</small>)}
                 </div>
               ))}
             </div>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-2">Current State</h3>
+            <div className="flex flex-row justify-center items-center mb-2">
+              <h3 className="text-lg font-semibold whitespace-nowrap">Current State</h3>
+              <span className="ml-3 w-full h-0 border-b-4 border-black" />
+            </div>
             <div className="grid grid-cols-2">
               <p className="mb-0"><strong>Health:</strong> {currentTraveler.state.health}</p>
               <p className="mb-0"><strong>Hope:</strong> {currentTraveler.state.hope}</p>
@@ -67,7 +77,10 @@ export default function Travelers({ travelerName, travelers }: TravelersProps) {
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-2">Neurocaster</h3>
+            <div className="flex flex-row justify-center items-center mb-2">
+              <h3 className="text-lg font-semibold whitespace-nowrap">Neurocaster</h3>
+              <span className="ml-3 w-full h-0 border-b-4 border-black" />
+            </div>
             <p className="mb-0"><strong>Name:</strong> {currentTraveler.neurocaster.name}</p>
             <p className="mb-0"><strong>Price:</strong> ${currentTraveler.neurocaster.price}</p>
             <div className="grid grid-cols-2">
@@ -122,8 +135,7 @@ export default function Travelers({ travelerName, travelers }: TravelersProps) {
               {Object.keys(currentTraveler.state.tensions).map((otherTravelerName) => (
                 <div key={otherTravelerName} className="border-4 border-black p-3 flex flex-row items-center" onClick={() => switchToTraveler(otherTravelerName)}>
                   <div className="flex-1">
-                    <p className="font-semibold mb-1">{otherTravelerName}</p>
-                    <p className="text-sm text-gray-600">{currentTraveler.state.tensions[otherTravelerName].num}</p>
+                    <p className="font-semibold mb-1">{otherTravelerName}: {currentTraveler.state.tensions[otherTravelerName].level} / 2</p>
                     <p className="text-sm text-gray-600">{currentTraveler.state.tensions[otherTravelerName].description}</p>
                   </div>
                   <div className={`${styles.arrowRight} `} />

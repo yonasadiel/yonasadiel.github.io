@@ -1,5 +1,6 @@
 'use client';
 
+import { Open_Sans } from 'next/font/google';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Book from './components/Book';
@@ -13,7 +14,9 @@ interface HecatePageProps {
   sessionId: string;
 }
 
-const backgroundImage = '/images/hecate/14983852.jpg'
+const openSans = Open_Sans({
+  subsets: ['latin'],
+})
 
 export default function HecatePage({ sessionId }: HecatePageProps) {
   const [showBook, setShowBook] = useState(false);
@@ -47,7 +50,8 @@ export default function HecatePage({ sessionId }: HecatePageProps) {
   }, [sessionId, travelerName, token]);
 
   return (
-    <div className={styles.hecate} style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div className={`${styles.hecate} ${openSans.className}`}>
+      <div className={styles.backgroundImage} style={{ opacity: loading ? 0 : 1,backgroundImage: `url(${sessionData?.backgroundImage})` }} />
       <div className={`${styles.welcomePage} ${showBook ? styles.fadeOut : ''}`}>
         <WelcomePage
           title={convertSessionIdToTitle(sessionId)}

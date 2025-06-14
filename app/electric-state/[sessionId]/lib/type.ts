@@ -1,7 +1,9 @@
 export type SessionData = {
   title: string
+  backgroundImage: string
   story: StoryChapter[]
   travelers: Traveler[]
+  maps: Map[]
 }
 
 export type StoryChapter = {
@@ -72,6 +74,11 @@ export type Weapon = {
 }
 
 export type Tension = {
-  num: number
+  level: number
   description: string
+}
+
+export type Map = {
+  title: string
+  url: string
 }

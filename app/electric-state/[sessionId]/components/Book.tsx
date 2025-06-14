@@ -36,7 +36,7 @@ export default function Book(props: BookProps) {
       case BOOKMARK_TRAVELERS:
         return <Travelers travelerName={travelerName} travelers={sessionData.travelers} />
       case BOOKMARK_MAP:
-        return <Map />
+        return <Map maps={sessionData.maps} />
       default:
         return null
     }
