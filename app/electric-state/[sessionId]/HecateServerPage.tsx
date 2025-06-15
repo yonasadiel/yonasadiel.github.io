@@ -49,7 +49,10 @@ export default function HecateServerPage({ sessionId, travelerName, token }: Hec
 
   return (
     <div className={`${styles.hecate} ${openSans.className}`}>
-      <div className={styles.backgroundImage} style={{ opacity: loading ? 0 : 1,backgroundImage: `url(${sessionData?.backgroundImage})` }} />
+      <div className={styles.backgroundImage} style={{
+        opacity: !!sessionData?.backgroundImage ? 1 : 0,
+        backgroundImage: !!sessionData?.backgroundImage ? `url(${sessionData?.backgroundImage})` : 'none',
+      }} />
       <div className={`${styles.welcomePage} ${showBook ? styles.fadeOut : ''}`}>
         <WelcomePage
           title={convertSessionIdToTitle(sessionId)}

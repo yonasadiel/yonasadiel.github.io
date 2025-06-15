@@ -20,16 +20,18 @@ export default function Story({ story }: StoryProps) {
         <div key={chapter.title} className="mb-4 border-black">
           <div>
             <h2
-              className="text-xl mb-3 font-semibold cursor-pointer flex items-center"
+              className="text-xl mb-3 font-semibold cursor-pointer flex items-center transition-transform duration-1000"
               onClick={() => toggleExpandedChapter(chapter.title)}>
-              <span className="mr-2 w-4">{expandedChapter === chapter.title ? '▼' : '▶'}</span>
+              <span className={`mr-2 w-4 transition-transform duration-300 ${expandedChapter === chapter.title ? 'rotate-0' : '-rotate-90'}`}>▼</span>
               {chapter.title}
             </h2>
-            {expandedChapter === chapter.title && (
+            <div 
+              className={`overflow-hidden transition-all duration-1000 ease-in-out ${expandedChapter === chapter.title ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}
+            >
               <div className="mb-4">
                 {chapter.story.split("\n").map((p) => <p key={p} className="mb-2">{p}</p>)}
               </div>
-            )}
+            </div>
           </div>
         </div>
       ))}

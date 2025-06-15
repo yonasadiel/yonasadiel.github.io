@@ -1,6 +1,6 @@
 'use client'
 
-import styles from 'app/electric-state/_components/Book.module.scss'
+import styles from 'app/electric-state/_components/Travelers.module.scss'
 import { Stats, Traveler } from 'app/electric-state/_lib/type'
 import { useRef, useState } from 'react'
 
