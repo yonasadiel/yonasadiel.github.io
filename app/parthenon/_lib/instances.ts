@@ -1,4 +1,4 @@
-import { GetInstanceResponse, InstanceStatus, ServerData } from './types';
+import { GetInstanceResponse, InstanceStatus, ServerData } from 'app/parthenon/_lib/types';
 
 export const RUNNING = "RUNNING"
 export const TERMINATED = "TERMINATED"

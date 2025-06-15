@@ -1,16 +1,16 @@
 'use client'
 
-import { useMemo, useState, ReactNode } from 'react'
+import PasswordModal from 'app/athena/_components/PasswordModal'
+import styles from 'app/athena/_components/Post.module.scss'
+import { decryptKey, decryptPost } from 'app/athena/_lib/decrypt'
+import { Post } from 'app/athena/_lib/post'
+import { useAthenaState } from 'app/athena/_lib/state'
+import Link from 'next/link'
+import { ReactNode, useMemo, useState } from 'react'
 import Markdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
-import Link from 'next/link'
-import { decryptKey, decryptPost } from 'lib/athena/decrypt'
-import { useAthenaState } from 'lib/athena/state'
-import { Post } from 'lib/athena/post'
-import PasswordModal from './PasswordModal'
-import styles from './Post.module.scss'
-import './Post.scss'
+import '/app/athena/_components/Post.scss'
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des']
 const formatDate = (date: Date): string =>  `${date.getDate()} ${month[date.getMonth()]} ${date.getFullYear()}`

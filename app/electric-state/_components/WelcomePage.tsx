@@ -1,6 +1,6 @@
 'use client'
 
-import styles from './WelcomePage.module.scss'
+import styles from 'app/electric-state/_components/WelcomePage.module.scss'
 
 interface WelcomePageProps {
   title: string

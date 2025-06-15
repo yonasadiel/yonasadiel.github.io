@@ -33,6 +33,6 @@
   ],
   "exclude": [
     "node_modules",
-    "lib/athena/encrypt.ts"
+    "app/athena/_lib/encrypt.ts"
   ]
 }

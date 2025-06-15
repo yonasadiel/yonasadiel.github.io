@@ -1,6 +1,6 @@
-import PostComponent from 'components/athena/Post'
-import { readAllPosts } from 'lib/athena/post'
-import { ROUTE_ATHENA } from 'lib/route'
+import { ROUTE_ATHENA } from 'app/_lib/route_const'
+import PostComponent from 'app/athena/_components/Post'
+import { readAllPosts } from 'app/athena/_lib/post'
 import Link from 'next/link'
 
 export const generateStaticParams = () => readAllPosts()

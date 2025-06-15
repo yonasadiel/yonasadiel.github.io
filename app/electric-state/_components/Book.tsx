@@ -1,11 +1,11 @@
 'use client'
 
+import styles from 'app/electric-state/_components/Book.module.scss'
+import Map from 'app/electric-state/_components/Map'
+import Story from 'app/electric-state/_components/Story'
+import Travelers from 'app/electric-state/_components/Travelers'
+import { SessionData } from 'app/electric-state/_lib/type'
 import { useState } from 'react'
-import { SessionData } from '../lib/type'
-import styles from './Book.module.scss'
-import Map from './Map'
-import Story from './Story'
-import Travelers from './Travelers'
 
 interface BookProps {
   sessionId: string

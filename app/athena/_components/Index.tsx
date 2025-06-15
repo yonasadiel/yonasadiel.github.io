@@ -1,6 +1,6 @@
-import { use } from 'react'
+import { Post, readAllPosts } from 'app/athena/_lib/post'
 import Link from 'next/link'
-import { Post, readAllPosts } from 'lib/athena/post'
+import { use } from 'react'
 
 const Index = () => {
   const allPosts = use(readAllPosts())

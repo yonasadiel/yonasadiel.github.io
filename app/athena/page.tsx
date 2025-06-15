@@ -1,5 +1,5 @@
-import { readAllPosts } from 'lib/athena/post'
-import PostComponent from 'components/athena/Post'
+import PostComponent from 'app/athena/_components/Post'
+import { readAllPosts } from 'app/athena/_lib/post'
 
 const AthenaPage = async () => {
   const allPosts = await readAllPosts()

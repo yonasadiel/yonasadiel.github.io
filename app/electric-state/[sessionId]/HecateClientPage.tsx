@@ -1,7 +1,7 @@
 'use client';
 
+import HecateServerPage from 'app/electric-state/[sessionId]/HecateServerPage';
 import { useSearchParams } from 'next/navigation';
-import HecateServerPage from './HecateServerPage';
 
 interface HecatePageProps {
   sessionId: string;

@@ -1,13 +1,13 @@
 'use client';
 
+import styles from 'app/electric-state/[sessionId]/styles.module.scss';
+import Book from 'app/electric-state/_components/Book';
+import WelcomePage from 'app/electric-state/_components/WelcomePage';
+import { convertSessionIdToTitle } from 'app/electric-state/_lib';
+import { getSessionData } from 'app/electric-state/_lib/api';
+import { SessionData } from 'app/electric-state/_lib/type';
 import { Open_Sans } from 'next/font/google';
 import { useEffect, useState } from 'react';
-import Book from './components/Book';
-import WelcomePage from './components/WelcomePage';
-import { convertSessionIdToTitle } from './lib';
-import { getSessionData } from './lib/api';
-import { SessionData } from './lib/type';
-import styles from './styles.module.scss';
 
 interface HecatePageProps {
   sessionId: string

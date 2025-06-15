@@ -1,8 +1,8 @@
 'use client'
 
+import styles from 'app/electric-state/_components/Book.module.scss'
+import { Stats, Traveler } from 'app/electric-state/_lib/type'
 import { useRef, useState } from 'react'
-import { Stats, Traveler } from '../lib/type'
-import styles from './Book.module.scss'
 
 interface TravelersProps {
   travelerName: string

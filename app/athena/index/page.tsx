@@ -1,4 +1,4 @@
-import Index from 'components/athena/Index'
+import Index from 'app/athena/_components/Index';
 
 const IndexPage = () => {
   return <Index />

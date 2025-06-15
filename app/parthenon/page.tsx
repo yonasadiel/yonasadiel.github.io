@@ -1,18 +1,19 @@
 'use client'
 
+import { getAccessToken } from 'app/parthenon/_lib/auth'
+import {
+  RUNNING,
+  TERMINATED,
+  getInstance,
+  startInstance,
+  stopInstance,
+} from 'app/parthenon/_lib/instances'
+import { InstanceStatus, ServerData } from 'app/parthenon/_lib/types'
+import styles from 'app/parthenon/styles.module.scss'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { Fragment, useCallback, useEffect, useState } from 'react'
-import { InstanceStatus, ServerData } from 'lib/parthenon/types'
-import { getAccessToken } from 'lib/parthenon/auth'
-import {
-  TERMINATED, RUNNING,
-  getInstance,
-  startInstance,
-  stopInstance,
-} from 'lib/parthenon/instances'
-import styles from './styles.module.scss'
 
 const SERVER_DATA_KEY = "parthenon_server_data"
 

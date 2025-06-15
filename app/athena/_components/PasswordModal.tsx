@@ -1,5 +1,5 @@
+import { Button, FormLabel, Input, Modal, ModalDialog } from '@mui/joy'
 import { useState } from 'react'
-import { FormLabel, Modal, ModalDialog, Input, Button } from '@mui/joy'
 
 interface PasswordModalProps {
   isOpen: boolean

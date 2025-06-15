@@ -1,9 +1,9 @@
 'use client'
 
+import { ROUTE_ATHENA, ROUTE_ATHENA_INDEX } from 'app/_lib/route_const'
+import styles from 'app/athena/_components/Navbar.module.scss'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ROUTE_ATHENA, ROUTE_ATHENA_INDEX } from 'lib/route'
-import styles from './Navbar.module.scss'
 
 const INDEX = 0
 const POST = 1

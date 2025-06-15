@@ -1,7 +1,7 @@
 'use client'
 
+import { StoryChapter } from 'app/electric-state/_lib/type'
 import { useState } from 'react'
-import { StoryChapter } from '../lib/type'
 
 interface StoryProps {
   story: StoryChapter[]

@@ -1,5 +1,5 @@
+import { ServerData } from 'app/parthenon/_lib/types';
 import crypto from 'crypto';
-import { ServerData } from './types';
 
 export const getAccessToken = (ServerData: ServerData, cb: (accessToken: string) => void) => {
   const now = Math.floor(new Date().getTime() / 1000)

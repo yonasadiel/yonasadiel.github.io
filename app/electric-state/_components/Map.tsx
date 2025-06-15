@@ -1,7 +1,7 @@
 'use client'
 
+import { Map } from 'app/electric-state/_lib/type'
 import { useState } from 'react'
-import { Map } from '../lib/type'
 
 export interface MapProps {
   maps: Map[]

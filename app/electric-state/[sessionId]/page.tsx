@@ -1,8 +1,8 @@
+import HecateClientPage from 'app/electric-state/[sessionId]/HecateClientPage';
+import HecateServerPage from 'app/electric-state/[sessionId]/HecateServerPage';
+import { convertSessionIdToTitle } from 'app/electric-state/_lib';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import HecateClientPage from './HecateClientPage';
-import HecateServerPage from './HecateServerPage';
-import { convertSessionIdToTitle } from './lib';
 
 export async function generateStaticParams() {
   return [{ sessionId: 'wasteland-justice' }]

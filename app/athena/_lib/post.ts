@@ -1,4 +1,5 @@
-import fs from 'fs'
+import { promises as fs } from 'fs'
+import path from 'path'
 
 export type Post = {
   title: string
@@ -31,13 +32,14 @@ export const parsePost = (postContent: string): Post => {
   return post
 }
 
-const readDir = (path: fs.PathLike) =>
-  new Promise<string[]>((resolve, reject) => fs.readdir(path, (err, files) => !!err ? reject(err) : resolve(files)))
+const postDir = 'data/posts'
 
-const readFile = (fileName: fs.PathOrFileDescriptor) =>
-  new Promise<string>((resolve, reject) => fs.readFile(fileName, {}, (err, data) => !!err ? reject(err) : resolve(data.toString('utf8'))))
-
-const postDir = 'data/posts/'
-export const readAllPosts = () => readDir(postDir)
-  .then((fileNames) => Promise.all(fileNames.map((fileName) => readFile(postDir + fileName))))
-  .then((fileContents) => fileContents.map(parsePost).sort((a, b) => a.date < b.date ? 1 : -1))
+export const readAllPosts = async () => {
+  const fileNames = await fs.readdir(postDir)
+  const fileContents = await Promise.all(
+    fileNames.map(fileName => fs.readFile(path.join(postDir, fileName), 'utf8'))
+  )
+  return fileContents
+    .map(parsePost)
+    .sort((a, b) => a.date < b.date ? 1 : -1)
+}
