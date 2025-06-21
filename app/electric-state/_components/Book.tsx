@@ -4,7 +4,7 @@ import styles from 'app/electric-state/_components/Book.module.scss'
 import Map from 'app/electric-state/_components/Map'
 import Story from 'app/electric-state/_components/Story'
 import Travelers from 'app/electric-state/_components/Travelers'
-import { SessionData } from 'app/electric-state/_lib/type'
+import { DM_NAME, SessionData } from 'app/electric-state/_lib/type'
 import { useState } from 'react'
 
 interface BookProps {
@@ -36,7 +36,7 @@ export default function Book(props: BookProps) {
       case BOOKMARK_TRAVELERS:
         return <Travelers travelerName={travelerName} travelers={sessionData.travelers} />
       case BOOKMARK_MAP:
-        return <Map maps={sessionData.maps} />
+        return <Map isDM={travelerName === DM_NAME} maps={sessionData.maps} />
       default:
         return null
     }

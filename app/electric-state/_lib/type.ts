@@ -1,9 +1,12 @@
+export const DM_NAME = 'DM'
+
 export type SessionData = {
   title: string
   backgroundImage: string
   story: StoryChapter[]
   travelers: Traveler[]
   maps: Map[]
+  combat?: Combat // only populated during combat mode
 }
 
 export type StoryChapter = {
@@ -81,4 +84,20 @@ export type Tension = {
 export type Map = {
   title: string
   url: string
+  maxY: number
+  pois: POI[]
+}
+
+export type POI = {
+  name: string
+  x: number
+  y: number
+}
+
+export type Combat = {
+  travelers: TravelerCombat[]
+}
+
+export type TravelerCombat = {
+  initiative: number
 }
