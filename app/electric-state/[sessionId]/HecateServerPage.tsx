@@ -1,7 +1,8 @@
 'use client';
 
 import styles from 'app/electric-state/[sessionId]/styles.module.scss';
-import Book from 'app/electric-state/_components/Book';
+import Book from 'app/electric-state/_components/book/Book';
+import FadeInImage from 'app/electric-state/_components/Image';
 import WelcomePage from 'app/electric-state/_components/WelcomePage';
 import { convertSessionIdToTitle } from 'app/electric-state/_lib';
 import { getSessionData } from 'app/electric-state/_lib/api';
@@ -49,10 +50,9 @@ export default function HecateServerPage({ sessionId, travelerName, token }: Hec
 
   return (
     <div className={`${styles.hecate} ${openSans.className}`}>
-      <div className={styles.backgroundImage} style={{
-        opacity: !!sessionData?.backgroundImage ? 1 : 0,
-        backgroundImage: !!sessionData?.backgroundImage ? `url(${sessionData?.backgroundImage})` : 'none',
-      }} />
+      <div className={styles.backgroundImage}>
+        {!!sessionData?.backgroundImage && <FadeInImage className="w-full h-full object-cover" alt="background art" src={sessionData.backgroundImage} />}
+      </div>
       <div className={`${styles.welcomePage} ${showBook ? styles.fadeOut : ''}`}>
         <WelcomePage
           title={convertSessionIdToTitle(sessionId)}

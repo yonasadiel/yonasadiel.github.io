@@ -1,6 +1,6 @@
 'use client'
 
-import styles from 'app/electric-state/_components/Travelers.module.scss'
+import styles from 'app/electric-state/_components/book/Travelers.module.scss'
 import { DM_NAME, Stats, Traveler } from 'app/electric-state/_lib/type'
 import { useRef, useState } from 'react'
 
@@ -21,9 +21,8 @@ export default function Travelers({ travelerName, travelers }: TravelersProps) {
     return (
       <div className="p-8 grid grid-cols-3 gap-x-4" ref={titleRef}>
         {travelers.map((t) => (
-          <div className="flex flex-col">
+          <div key={t.name} className="flex flex-col">
             <TravelerSheet
-              key={t.name}
               traveler={t}
               isOwnedTraveler={false}
               onSwitchToTraveler={() => {}}

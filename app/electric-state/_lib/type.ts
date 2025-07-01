@@ -56,7 +56,7 @@ export type Neurocaster = {
   mobility: number
 }
 
-export type Item = Gear | Weapon
+export type Item = Gear | Weapon | Armor
 
 export type Gear = {
   name: string
@@ -74,6 +74,14 @@ export type Weapon = {
   minRange: 'Engaged' | 'Short' | 'Medium' | 'Long'
   maxRange: 'Engaged' | 'Short' | 'Medium' | 'Long'
   price: number
+}
+
+export type Armor = {
+  name: string
+  type: 'armor'
+  level: number
+  agilityModifier: number
+  prioce: number
 }
 
 export type Tension = {
@@ -95,9 +103,26 @@ export type POI = {
 }
 
 export type Combat = {
-  travelers: TravelerCombat[]
+  active: boolean // don't show combat page if false
+  currentTurn: string // the name of the Turn
+  map: CombatMap
+  turns: Turn[]
 }
 
-export type TravelerCombat = {
-  initiative: number
+export type CombatMap = {
+  url: string
+  offsetX: number // all positions of the Turn needs to be offseted using this pixel. Treat it as the percentage of the image width
+  offsetY: number // all positions of the Turn needs to be offseted using this pixel. Treat it as the percentage of the image height
+  gridX: number // number of squares horizontally
+  gridY: number // number of squares vertically
+}
+
+export type Turn = {
+  name: string
+  state: 'alive' | 'incapacitated' | 'dead'
+  initiative: number // determining the turn order. Can be assumed unique, no need for tie breaker
+  deathRollFailedCount: number // 0 - 2, 3 means dead
+  deathRollSucceedCount: number // number of 6's of death rolls
+  posX: number // based on the map grid, this is the square number of the turn taker, horizontally, from the bottom left
+  posY: number // based on the map grid, this is the square number of the turn taker, vertically, from the bottom left
 }
