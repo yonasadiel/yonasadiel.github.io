@@ -61,7 +61,8 @@ export type Item = Gear | Weapon | Armor
 export type Gear = {
   name: string
   type: 'gear'
-  bonus: number
+  bonus?: number // not all gear give bonuses
+  used?: number // not all gear needs to track number of uses
   description: string
   price: number
 }

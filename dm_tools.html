@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TES_DM_ARCHIVE_UNIT_734</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto+Mono:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* gray-900 */
+            color: #D1D5DB; /* gray-300 */
+        }
+        .container-main {
+            background-color: #1F2937; /* gray-800 */
+            border: 1px solid #374151; /* gray-700 */
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+        }
+        .header-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #FACC15; /* yellow-400 */
+            text-shadow: 0 0 5px #FACC15;
+        }
+        .header-subtitle {
+            color: #9CA3AF; /* gray-400 */
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .tab-buttons-container {
+            border-bottom: 1px solid #374151; /* gray-700 */
+        }
+        .tab-button {
+            font-family: 'Roboto Mono', monospace;
+            color: #9CA3AF; /* gray-400 */
+            border: 1px solid transparent;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+        .tab-button:hover {
+            color: #FACC15; /* yellow-400 */
+        }
+        .tab-button.active {
+            color: #FACC15; /* yellow-400 */
+            border-bottom: 2px solid #FACC15; /* yellow-400 */
+            background-color: rgba(250, 204, 21, 0.05);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+        .content-grid-full {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        .scrapbook-entry { /* This will now be the <details> tag */
+            background-color: #374151; /* gray-700 */
+            border: 1px solid #4B5563; /* gray-600 */
+            border-radius: 0.125rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 1rem; /* Add margin for spacing between details elements */
+        }
+        .scrapbook-entry summary { /* This will be the .entry-title */
+            font-family: 'Orbitron', sans-serif;
+            color: #FBBF24; /* amber-400 */
+            font-size: 1.2rem;
+            padding: 1.25rem;
+            border-bottom: 1px solid #4B5563; /* gray-600 */
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            list-style: none; /* Remove default marker */
+            position: relative;
+        }
+        .scrapbook-entry summary::-webkit-details-marker { display: none; } /* Hide Safari/Chrome marker */
+        .scrapbook-entry summary::marker { display: none; } /* Hide Firefox marker */
+
+        .scrapbook-entry summary:hover {
+            background-color: #4B5563; /* gray-600 */
+        }
+        .scrapbook-entry[open] summary {
+            background-color: #404857; /* Slightly different when open */
+            border-bottom: 1px dashed #FACC15; /* Accent border when open */
+        }
+         .scrapbook-entry summary .sparkle {
+            color: #FACC15; /* yellow-400 */
+            font-size: 1.2em;
+        }
+
+
+        .entry-content { /* New class for the content inside <details> */
+            padding: 1.25rem;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #E5E7EB; /* gray-200 */
+        }
+        .entry-content strong {
+            color: #F9FAFB; /* gray-50 */
+            font-weight: 600;
+        }
+        .entry-content ul {
+            list-style-type: '- ';
+            padding-left: 1rem;
+            margin-top: 0.75rem;
+        }
+         .entry-content ul li {
+            margin-bottom: 0.375rem;
+        }
+        .entry-content code {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #111827; /* gray-900 */
+            color: #FACC15; /* yellow-400 */
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.125rem;
+            font-size: 0.85rem;
+            border: 1px solid #374151;
+        }
+        .entry-content h4 {
+            font-family: 'Roboto Mono', monospace;
+            color: #A5B4FC; /* indigo-300 */
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-top: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+        .scrapbook-entry-full-width {
+             grid-column: 1 / -1;
+        }
+
+        .gemini-input, .gemini-select {
+            width: 100%;
+            background-color: #1F2937; /* gray-800 */
+            border: 1px solid #4B5563; /* gray-600 */
+            color: #D1D5DB; /* gray-300 */
+            padding: 0.5rem;
+            border-radius: 0.125rem;
+            margin-bottom: 0.75rem; /* Increased margin */
+            font-family: 'Roboto Mono', monospace;
+        }
+        .gemini-label {
+            display: block;
+            font-family: 'Roboto Mono', monospace;
+            color: #9CA3AF; /* gray-400 */
+            margin-bottom: 0.25rem;
+            font-size: 0.8rem;
+        }
+        .gemini-button {
+            background-color: #FACC15; /* yellow-400 */
+            color: #111827; /* gray-900 */
+            padding: 0.6rem 1.2rem; /* Slightly larger */
+            border-radius: 0.125rem;
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border: none;
+            margin-right: 0.5rem;
+        }
+        .gemini-button:hover {
+            background-color: #FBBF24; /* amber-400 */
+        }
+        .gemini-button-secondary {
+            background-color: #4B5563; /* gray-600 */
+            color: #E5E7EB; /* gray-200 */
+        }
+        .gemini-button-secondary:hover {
+            background-color: #525c6b; /* gray-500 */
+        }
+        .loading-indicator, .error-message {
+            font-family: 'Roboto Mono', monospace;
+            color: #9CA3AF; /* gray-400 */
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+        .error-message {
+            color: #F87171; /* red-400 */
+        }
+        .generated-content {
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed #4B5563; /* gray-600 */
+        }
+        .table-container {
+            overflow-x: auto;
+            max-height: 400px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #4B5563; /* gray-600 */
+            padding: 0.6rem;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #1F2937; /* gray-800 */
+            color: #FACC15; /* yellow-400 */
+            font-family: 'Roboto Mono', monospace;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .page-section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #F87171; /* red-400 */
+            font-size: 1.75rem;
+            text-align: center;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px dashed #F87171;
+            letter-spacing: 0.1em;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1F2937; /* gray-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FACC15; /* yellow-400 */
+            border-radius: 0;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FBBF24; /* amber-400 */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-6">
+    <div class="container-main mx-auto max-w-7xl rounded-sm p-4 sm:p-6">
+        <header class="text-center mb-6">
+            <h1 class="header-title text-3xl sm:text-4xl">ARCHIVE_TES_DM_734</h1>
+            <p class="header-subtitle text-sm">FIELD GUIDE // OPERATIONAL DATA // REVISION 3.0</p>
+        </header>
+
+        <div id="tab-buttons" class="tab-buttons-container mb-6 flex flex-wrap justify-start -mx-1">
+            <button class="tab-button active" onclick="showTab('mechanics')">Core_Sys</button>
+            <button class="tab-button" onclick="showTab('threats')">Hostiles</button>
+            <button class="tab-button" onclick="showTab('gear')">Materiel</button>
+            <button class="tab-button" onclick="showTab('npcs')">Personnel</button>
+            <button class="tab-button" onclick="showTab('world')">Intel_World</button>
+            <button class="tab-button" onclick="showTab('journey')">Directives</button>
+            <button class="tab-button" onclick="showTab('journey_generator')"><span class="text-yellow-400">✨</span>Journey_Gen</button>
+        </div>
+
+        <div id="mechanics" class="tab-content active">
+            <h2 class="page-section-title">SYSTEM_MECHANICS_PROTOCOLS</h2>
+            <div class="content-grid">
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Dice & Rolls (p.16, 53)</summary>
+                    <div class="entry-content">
+                        <p>Actions are resolved using six-sided dice (D6).</p>
+                        <h4>Success</h4>
+                        <p>Roll dice equal to relevant Attribute score. A <code>6</code> (Sentre logo on custom dice) is a success. At least one <code>6</code> needed.</p>
+                        <h4>Pushing Rolls</h4>
+                        <p>If a roll fails or more successes are desired, you can push. Re-roll any dice not showing a <code>1</code> (skull) or <code>6</code> (Sentre logo). All dice count after re-roll. For each <code>1</code> (skull) on a BASE DIE after pushing, lose 1 Hope. Cannot re-roll dice showing skull or gear damage symbols.</p>
+                        <h4>Gear Dice</h4>
+                        <p>Use dice of a different color. <code>6</code>s are successes. A <code>1</code> (gear damage symbol) on a GEAR DIE when pushing reduces the gear's bonus by 1 (if bonus hits 0, gear is Busted). Does NOT reduce Hope.</p>
+                        <h4>Multiple Successes</h4>
+                        <p>More <code>6</code>s = better outcome (e.g., more damage, faster/quieter action, additional positive effects as per GM).</p>
+                        <h4>Helping</h4>
+                        <p>Up to 3 others can help, giving <code>+1</code> die each if they can logically assist. In combat, helping uses the helper's turn.</p>
+                        <h4>Opposed Rolls (p.54)</h4>
+                        <p>When facing active resistance (e.g., convincing a skeptical NPC, sneaking past a guard). Both sides roll. Active party needs MORE successes than opponent. Only active party can push. Tension between Travelers adds bonus dice.</p>
+                        <h4>Modifiers</h4>
+                        <p>GM or rules can grant bonus dice (e.g., <code>+1 die</code>) or penalty dice (e.g., <code>-2 dice</code>). Never roll fewer than one die.</p>
+                    </div>
+                </details>
+
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Attributes & Core Stats (p.52, 54-55)</summary>
+                    <div class="entry-content">
+                        <h4>Attributes (p.52)</h4>
+                        <p>Rated 2-6. Roll 4D6 for starting values, re-roll 1s until all dice are 2+. Assign to:</p>
+                        <ul>
+                            <li><strong>Strength (STR):</strong> Toughness, endurance, physical force.</li>
+                            <li><strong>Agility (AGI):</strong> Coordination, dexterity, speed, aiming.</li>
+                            <li><strong>Wits (WITS):</strong> Intellect, awareness, knowledge, problem-solving.</li>
+                            <li><strong>Empathy (EMP):</strong> Social skills, understanding others, persuasion, deception.</li>
+                        </ul>
+                        <p><em>Low starting total (≤15) grants an extra talent.</em></p>
+                        <h4>Health (p.54)</h4>
+                        <p>Physical well-being. Max Health = (STR + AGI) / 2, rounded up. Reaching 0 Health = Incapacitated.</p>
+                        <h4>Hope (p.55)</h4>
+                        <p>Mental resilience, willpower. Max Hope = (WITS + EMP) / 2, rounded up. Reaching 0 Hope = Breakdown.</p>
+                        <h4>Bliss (p.55, 92-93)</h4>
+                        <p>Accumulated from using neuronics. Each failed neuro-roll = +1 Bliss. If Bliss ≥ Hope, user is trapped in the Electric State. Reduced by 1 per day (no neurocaster), but D6 roll of <code>1</code> makes that point of Bliss permanent.</p>
+                    </div>
+                </details>
+
+                <details class="scrapbook-entry scrapbook-entry-full-width">
+                    <summary class="entry-title">Talents (p.56-57)</summary>
+                    <div class="entry-content table-container">
+                        <p>Special skills granting bonuses or unique actions. Start with one (or two if low attributes). New talents learned via Improvement Rolls.</p>
+                        <table class="data-table">
+                            <thead><tr><th>Talent</th><th>Effect</th></tr></thead>
+                            <tbody>
+                                <tr><td>Athlete</td><td>+2 dice to AGI rolls for jumping, climbing, running.</td></tr>
+                                <tr><td>Backstabber</td><td>+2 dice to AGI rolls for ambushes (p.81).</td></tr>
+                                <tr><td>Biker</td><td>+2 dice to AGI rolls for driving two-wheeled vehicles.</td></tr>
+                                <tr><td>Blade fighter</td><td>+2 dice to close combat rolls with sharp melee weapons.</td></tr>
+                                <tr><td>Boatman</td><td>+2 dice to AGI rolls for maneuvering boats.</td></tr>
+                                <tr><td>Bomber</td><td>+2 dice when using explosive weapons.</td></tr>
+                                <tr><td>Bowman</td><td>+2 dice when firing a bow or crossbow.</td></tr>
+                                <tr><td>Charmer</td><td>+2 dice to EMP rolls to make an NPC like you.</td></tr>
+                                <tr><td>Club fighter</td><td>+2 dice to close combat rolls with blunt melee weapons.</td></tr>
+                                <tr><td>Con artist</td><td>+2 dice to EMP rolls to bluff or lie to an NPC.</td></tr>
+                                <tr><td>Data miner</td><td>+2 dice when using neurocaster to find info (p.94).</td></tr>
+                                <tr><td>Dirty fighter</td><td>Unarmed close combat attacks have base Damage 2.</td></tr>
+                                <tr><td>Drama queen</td><td>In opposed rolls vs other Travelers, Tension bonus is doubled.</td></tr>
+                                <tr><td>Dreamer</td><td>Max Hope +2.</td></tr>
+                                <tr><td>Driver</td><td>+2 dice to AGI rolls for driving car/truck.</td></tr>
+                                <tr><td>Drone operator</td><td>+2 dice to all rolls when controlling a drone (p.98).</td></tr>
+                                <tr><td>Electronics</td><td>+2 dice to WITS rolls for manipulating/repairing electronics.</td></tr>
+                                <tr><td>Evasive</td><td>+2 dice to AGI rolls for dodging ranged attacks (p.80).</td></tr>
+                                <tr><td>Gamer</td><td>+2 dice when using neurocaster for avatar interactions (p.97).</td></tr>
+                                <tr><td>Hacker</td><td>+2 dice when using neurocaster to hack systems (p.94).</td></tr>
+                                <tr><td>Hardened</td><td>+2 dice to WITS/EMP rolls resisting traumatic events (p.85).</td></tr>
+                                <tr><td>Intuition</td><td>Once per session, ask GM for useful info.</td></tr>
+                                <tr><td>Leader</td><td>+2 dice to EMP rolls to rally Incapacitated (p.82) or Breakdown (p.85).</td></tr>
+                                <tr><td>Lone wolf</td><td>Can reduce Tension (p.65) alone.</td></tr>
+                                <tr><td>Machinegunner</td><td>+2 dice when using fully automatic fire (p.81).</td></tr>
+                                <tr><td>Martial artist</td><td>+2 dice to close combat rolls when unarmed.</td></tr>
+                                <tr><td>Mechanic</td><td>+2 dice to WITS rolls for repairing vehicles/mechanical devices.</td></tr>
+                                <tr><td>Medic</td><td>Action: Roll WITS to stabilize Incapacitated (p.82). First aid kit gives bonus.</td></tr>
+                                <tr><td>Menacing</td><td>Can roll STR instead of EMP for threats, +2 dice.</td></tr>
+                                <tr><td>Musician</td><td>Using instrument for a Stretch gives +2 to EMP rolls vs audience.</td></tr>
+                                <tr><td>Neuroresistant</td><td>Better chance to resist Bliss (p.93). WITS roll to leave neuroscape if Bliss ≥ Hope.</td></tr>
+                                <tr><td>Nine lives</td><td>+2 dice on death rolls (p.82) (roll 6D6 instead of 4D6).</td></tr>
+                                <tr><td>Nurse</td><td>Spend Shift caring: patient heals 2 damage/Shift (if resting). Care for WITS score patients.</td></tr>
+                                <tr><td>Pilot</td><td>+2 dice to AGI rolls for piloting aircraft.</td></tr>
+                                <tr><td>Pistoleer</td><td>+2 dice when firing pistol/revolver.</td></tr>
+                                <tr><td>Resilient</td><td>+2 dice to STR rolls for resisting hunger/disease.</td></tr>
+                                <tr><td>Rider</td><td>+2 dice to AGI rolls for riding animals.</td></tr>
+                                <tr><td>Scout</td><td>+2 dice to WITS rolls for spotting threats.</td></tr>
+                                <tr><td>Sleuth</td><td>+2 dice to WITS rolls when searching for clues.</td></tr>
+                                <tr><td>Sniper</td><td>+2 dice when firing rifle at Long+ range (not full auto).</td></tr>
+                                <tr><td>Speaker</td><td>+2 dice to EMP rolls to speak to/sway a group of NPCs.</td></tr>
+                                <tr><td>Stealthy</td><td>+2 dice to AGI rolls for staying hidden (not ambushes).</td></tr>
+                                <tr><td>Surgeon</td><td>Serious injuries (p.84) may need surgery (WITS roll).</td></tr>
+                                <tr><td>Techno babbler</td><td>Roll WITS instead of EMP to convince on tech matters.</td></tr>
+                                <tr><td>Thief</td><td>+2 dice to rolls for breaking locks/hotwiring cars.</td></tr>
+                                <tr><td>Tough</td><td>Max Health +2.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Combat Overview (p.78-81)</summary>
+                     <div class="entry-content">
+                        <h4>Sequence</h4>
+                        <ol>
+                            <li><strong>Initiative (p.78):</strong> Determine attacker/defender sides. Attackers act first, then defenders.</li>
+                            <li><strong>Turns (p.78):</strong> Each combatant gets 1 move + 1 action OR 2 moves. Move must precede action.</li>
+                        </ol>
+                        <h4>Range Bands (p.78)</h4>
+                        <ul>
+                            <li><strong>Engaged:</strong> Melee.</li>
+                            <li><strong>Short:</strong> Same zone.</li>
+                            <li><strong>Medium:</strong> Adjacent zone.</li>
+                            <li><strong>Long:</strong> Up to 4 zones away.</li>
+                            <li><strong>Extreme:</strong> Further.</li>
+                        </ul>
+                        <h4>Close Combat (p.80)</h4>
+                        <p>STR roll. Target takes hit or fights back (opposed STR vs STR). Damage based on weapon + extra <code>6</code>s.</p>
+                        <h4>Ranged Combat (p.80)</h4>
+                        <p>AGI roll. Target stands tall or dodges (opposed AGI vs AGI). Cover grants armor. Damage based on weapon + extra <code>6</code>s.</p>
+                        <h4>Ambushes (p.81)</h4>
+                        <p>AGI roll to surprise. Unaware target cannot fight back/dodge. -3 dice for close combat ambush.</p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Damage, Healing & Conditions (p.82-89)</summary>
+                    <div class="entry-content">
+                        <h4>Taking Damage (p.82)</h4>
+                        <p>Reduces Health. At 0 Health = <strong>Incapacitated</strong>.
+                        <ul>
+                            <li><strong>Death Rolls:</strong> 4D6 each turn while Incapacitated. 3 total <code>6</code>s = Stabilized. 3 failed rolls (fewer than 3 <code>6</code>s accumulated) = Death.</li>
+                            <li><strong>Rallying:</strong> EMP roll by another to restore some Health.</li>
+                            <li><strong>Stabilizing:</strong> Medic talent + WITS roll stops death rolls.</li>
+                        </ul>
+                        </p>
+                        <h4>Serious Injuries (p.84)</h4>
+                        <p>If Incapacitated but survive, roll on Serious Injury table (see PDF p.84 for full table). Effects vary, some need Surgery (Surgeon talent, WITS roll).</p>
+                        <h4>Healing (p.84)</h4>
+                        <p>1 Health per Shift if resting (2 with Nurse care). Blocked by hunger/disease.</p>
+                        <h4>Hope Loss & Breakdown (p.85)</h4>
+                        <p>From pushing rolls or Traumatic Events (resist with EMP). At 0 Hope = <strong>Breakdown</strong> (cannot act meaningfully).
+                        <ul>
+                            <li><strong>Rallying:</strong> EMP roll by another to restore some Hope.</li>
+                            <li><strong>Hope Recovery:</strong> Reduce Tension with other Travelers, or use specific gear. Not automatic while hungry/sleep-deprived.</li>
+                        </ul>
+                        </p>
+                        <h4>Mental Trauma (p.87)</h4>
+                        <p>If suffer Breakdown, roll on Mental Trauma table (see PDF p.87 for full table). Weekly WITS/EMP roll to recover.</p>
+                        <h4>Other Hazards (p.88-89)</h4>
+                        <p>Explosions (Blast Power), Cold (STR rolls or damage), Fire (Intensity), Disease (Virulence vs STR), Falling, Hunger/Thirst (STR rolls or damage, blocks recovery), Sleep Deprivation (WITS rolls or fall asleep, blocks Hope recovery).</p>
+                    </div>
+                </details>
+
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Neuronics In-Depth (p.90-97)</summary>
+                    <div class="entry-content">
+                        <h4>Neurocasters (p.90, 92)</h4>
+                        <p>Helmets to access neuroscapes. Attributes: Processor, Network, Graphics (gear dice). Damaged by pushing rolls. Busted if attribute = 0. Wired connection = +2 dice.</p>
+                        <h4>Neuroscapes (p.92, 133)</h4>
+                        <p>Virtual worlds. Local or Global. Bliss accumulation (p.92). If Bliss ≥ Hope = Trapped. Describe using Type, Theme, Mood (PDF p.133).</p>
+                        <h4>Actions in Neuroscape</h4>
+                        <ul>
+                            <li><strong>Finding Information (p.94):</strong> WITS roll (+Processor, +Data Miner talent). Difficulty (1-3) = # of successful rolls needed. Each roll = 1 Stretch (or 1 Shift if previous failed).</li>
+                            <li><strong>Hacking Systems (p.94):</strong> WITS roll (+Network, +Hacker talent) vs system Difficulty (1-3). To disable for Stretch. +1 Difficulty to control, +1 Difficulty for Shift duration. Each roll = 1 Stretch. Failure may trigger alarms.</li>
+                            <li><strong>Interacting with Avatars (p.97):</strong>
+                                <ul>
+                                    <li><em>Communication/Persuasion:</em> EMP roll (+Graphics, +Gamer talent) vs opponent's WITS (+Network).</li>
+                                    <li><em>Manipulation:</em> Series of EMP rolls over time to change core beliefs.</li>
+                                    <li><em>Avatar Combat:</em> Close combat rules, but use WITS. +Graphics, +Gamer. Damage reduces user's Health. 0 Health = Incapacitated, disconnect, mental trauma.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h4>Intercerebral Intelligences (p.97)</h4>
+                        <p>Sentient entities native to neuroscapes. Have WITS/EMP, don't need casters.</p>
+                    </div>
+                </details>
+                 <details class="scrapbook-entry">
+                    <summary class="entry-title">Drones (p.98-99)</summary>
+                    <div class="entry-content">
+                        <p>Remote-controlled robots. Require neurocaster. Use drone's STR/AGI, user's WITS/EMP. Neurocaster's Network attribute as gear dice for all rolls. Drones have Hull (like Health) and Armor. Hull 0 = drone inoperable, operator disconnects. Failed rolls controlling drone = +1 Bliss for operator.</p>
+                        <h4>Consumer Drones (Example from p.99)</h4>
+                        <ul class="list-none p-0">
+                           <li><strong>Kid Kosmo:</strong> STR 3, AGI 5, Hull 8, Armor 2, Dmg 1 (Engaged)</li>
+                           <li><strong>Wally Wayne:</strong> STR 4, AGI 5, Hull 9, Armor 2, Dmg 1 (Short-Medium)</li>
+                        </ul>
+                        <p><em>(See PDF p.99 for full table)</em></p>
+                        <h4>Military Drones & Drone Growths</h4>
+                        <p>Military drones are heavily armed/armored. Drone Growths are mysterious, often large, jury-rigged drones, possibly linked to Intercerebral Intelligences (see Threats tab).</p>
+                    </div>
+                </details>
+                 <details class="scrapbook-entry">
+                    <summary class="entry-title">Vehicles & Chases (p.101-107)</summary>
+                    <div class="entry-content">
+                        <h4>Vehicle Attributes (p.101)</h4>
+                        <p>Passengers, Maneuverability (gear dice for driving), Speed (zones/round in combat), Hull, Armor. Traits (PDF p.102) can modify. Fuel tracked abstractly.</p>
+                        <h4>Vehicle Movement & Stunts (p.103)</h4>
+                        <p>Driving in combat: Speed rating = # of moves. Stunts (jumping, ramming) are actions, require AGI roll (+Maneuverability). Failed roll = Accident (see PDF tables p.104).</p>
+                        <h4>Vehicle Damage (p.105)</h4>
+                        <p>Suffer damage to Hull. Hull 0 = Wrecked. Component damage if take ≥ half Hull in one hit (roll D6 on table, PDF p.105). Maneuverability reduced by pushing rolls; if 0, inoperable.</p>
+                        <h4>Chases (p.106-107)</h4>
+                        <p>Abstract range categories. Open opposed AGI roll (+Maneuverability) each round. Winner adjusts range by # of extra <code>6</code>s. Range > Extreme = escape. Range Engaged = ram/attack. Obstacles (PDF p.107) can complicate.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div id="threats" class="tab-content">
+            <h2 class="page-section-title">THREAT_ANALYSIS_REPORTS</h2>
+            <div class="content-grid">
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Violent Threats (p.138-140)</summary>
+                    <div class="entry-content">
+                        <p>Primarily use force or intimidation.</p>
+                        <h4>Law Enforcement</h4>
+                        <p><strong>Stats:</strong> STR 4, AGI 4, WITS 3, EMP 3, Health 4. Talent: Pistoleer. Gear: Handgun/shotgun, patrol car, $100. <br><strong>Tactics:</strong> Uphold law (often corruptly), roadblocks, questioning, arrests, potential for excessive force.</p>
+                        <h4>Secret Agents</h4>
+                        <p><strong>Stats:</strong> STR 4, AGI 5, WITS 3, EMP 2, Health 5. Talent: Stealthy. Gear: Handgun/assault rifle, black van, $200.<br><strong>Tactics:</strong> Surveillance, deception, espionage, kidnapping, assassination. Highly loyal to mission.</p>
+                        <h4>Gang Members</h4>
+                        <p><strong>Stats:</strong> STR 3, AGI 4, WITS 3, EMP 3, Health 4. Talent: Knifeman. Gear: Knife/bat/handgun, neurine, D6x$10, vehicle.<br><strong>Tactics:</strong> Robbery, extortion, territorial violence, intimidation. Motivations vary (survival to sadism).</p>
+                        <h4>Crazed Killers</h4>
+                        <p><strong>Stats:</strong> STR 5, AGI 5, WITS 3, EMP 4, Health 5. Talent: Knifeman. Gear: Knife, shotgun, car, $50.<br><strong>Tactics:</strong> Unpredictable violence, often driven by delusion or trauma. May be manipulated by other forces.</p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Manipulative Threats (p.142-145)</summary>
+                     <div class="entry-content">
+                        <p>Use influence, lies, and social engineering.</p>
+                        <h4>Cultists</h4>
+                        <p><strong>Stats:</strong> STR 3, AGI 4, WITS 3, EMP 5, Health 4. Talent: Charmer. Gear: Holy symbol/texts, knife.<br><strong>Tactics:</strong> Recruitment through charisma/promises, isolation of members, psychological manipulation, fanatical devotion to leader/ideology. Often hostile to outsiders or those rejecting their beliefs.</p>
+                        <h4>Local Strongmen</h4>
+                        <p><strong>Stats:</strong> STR 4, AGI 3, WITS 4, EMP 5, Health 4. Talent: Menacing. Gear: Handgun, $200.<br><strong>Tactics:</strong> Exploit chaos for power, offer protection for loyalty, use fear/prejudice, eliminate rivals. May seem charming initially.</p>
+                        <h4>Business Leaders</h4>
+                        <p><strong>Stats:</strong> STR 3, AGI 3, WITS 5, EMP 4, Health 3. Talent: Con artist. Gear: Handgun, $500.<br><strong>Tactics:</strong> Scams, exploitation for profit, disregard for well-being of others. Motivated by greed, often hiding behind a veneer of legitimacy.</p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Technological Threats (p.146-149)</summary>
+                    <div class="entry-content">
+                        <p>Malfunctioning or malevolent AI, drones, robots.</p>
+                        <h4>Robots</h4>
+                        <p><strong>Example Stats:</strong> STR 6, AGI 4, Hull 5, Armor 6. Weapons: Vice grip (Dmg 2), taser.<br><strong>Tactics:</strong> Follow programming (which may be corrupted), guard duty, automated tasks. Can be hacked. Some rumored to gain sentience.</p>
+                        <h4>Drone Growths</h4>
+                        <p><strong>Example Stats:</strong> STR 9, AGI 6, WITS 8, EMP 3, Hull 10, Armor 6. Weapons: Stomp (Dmg 2), Electric Blast (Dmg 2), Neuroscape Ray gun (Dmg 2).<br><strong>Tactics:</strong> Physical manifestations of Intercerebral Intelligences. Often large, bizarrely constructed. Can act in real world and neuroscape. May seek to assimilate humans or resources.</p>
+                        <h4>Systems</h4>
+                        <p>Bodiless AIs in networks. Confronted via neurocasting. <br><strong>Tactics:</strong> Control networks, manipulate connected devices/drones/people, information warfare, self-preservation, expansion. May have complex, alien motivations.</p>
+                    </div>
+                </details>
+                 <details class="scrapbook-entry">
+                    <summary class="entry-title">Environmental Threats (p.150)</summary>
+                    <div class="entry-content">
+                        <h4>Extreme Weather</h4>
+                        <p>Hurricanes, blizzards, heatwaves. Cause direct damage, destroy resources, block paths, create survival challenges (cold, fire, falling debris).</p>
+                        <h4>Disease</h4>
+                        <p>Epidemics or bio-weapons. Virulence rating (p.89). Spread, cause illness, death. Can create panic and social breakdown.</p>
+                        <h4>Other</h4>
+                        <p>Earthquakes, wildfires, floods, landslides, animal attacks, pollution zones.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div id="gear" class="tab-content">
+            <h2 class="page-section-title">EQUIPMENT_MANIFESTS</h2>
+            <div class="content-grid">
+                <details class="scrapbook-entry scrapbook-entry-full-width">
+                    <summary class="entry-title">Weapons Table (p.81)</summary>
+                    <div class="entry-content table-container">
+                        <table class="data-table">
+                            <thead><tr><th>Type</th><th>Bonus</th><th>Min. Range</th><th>Damage</th><th>Max Range</th><th>Price</th><th>Notes</th></tr></thead>
+                            <tbody>
+                                <tr><td>Unarmed</td><td>-</td><td>Engaged</td><td>1</td><td>Engaged</td><td>-</td><td></td></tr>
+                                <tr><td>Improvised club</td><td>+1</td><td>Engaged</td><td>1</td><td>Engaged</td><td>-</td><td></td></tr>
+                                <tr><td>Knife</td><td>+1</td><td>Engaged</td><td>2</td><td>Engaged</td><td>$25</td><td></td></tr>
+                                <tr><td>Baseball bat</td><td>+2</td><td>Engaged</td><td>1</td><td>Engaged</td><td>$50</td><td></td></tr>
+                                <tr><td>Axe</td><td>+2</td><td>Engaged</td><td>2</td><td>Engaged</td><td>$100</td><td></td></tr>
+                                <tr><td>Chainsaw</td><td>+1</td><td>Engaged</td><td>3</td><td>Engaged</td><td>$250</td><td></td></tr>
+                                <tr><td>Rock</td><td>-</td><td>Engaged</td><td>1</td><td>Medium</td><td>-</td><td>Thrown</td></tr>
+                                <tr><td>Taser</td><td>+3</td><td>Engaged</td><td>*</td><td>Short</td><td>$500</td><td>*Target STR roll (-2) or lose next turn.</td></tr>
+                                <tr><td>Derringer</td><td>+2</td><td>Engaged</td><td>2</td><td>Short</td><td>$250</td><td>Single-shot</td></tr>
+                                <tr><td>Handgun</td><td>+2</td><td>Short</td><td>2</td><td>Medium</td><td>$300</td><td></td></tr>
+                                <tr><td>Magnum revolver</td><td>+2</td><td>Short</td><td>3</td><td>Medium</td><td>$400</td><td></td></tr>
+                                <tr><td>Crossbow</td><td>+2</td><td>Medium</td><td>1</td><td>Long</td><td>$150</td><td>Single-shot (reload action)</td></tr>
+                                <tr><td>Hunting rifle</td><td>+2</td><td>Medium</td><td>2</td><td>Long</td><td>$500</td><td>Single-shot (reload action)</td></tr>
+                                <tr><td>Shotgun</td><td>+3</td><td>Short</td><td>2</td><td>Medium</td><td>$350</td><td>Can hit multiple targets at Short if close</td></tr>
+                                <tr><td>Sniper rifle</td><td>+2</td><td>Medium</td><td>2</td><td>Extreme</td><td>#</td><td>+2 dice if aiming (action)</td></tr>
+                                <tr><td>Submachinegun</td><td>+2</td><td>Short</td><td>2</td><td>Medium</td><td>#</td><td>Full Auto capable</td></tr>
+                                <tr><td>Assault rifle</td><td>+3</td><td>Short</td><td>2</td><td>Long</td><td>#</td><td>Full Auto capable</td></tr>
+                                <tr><td>Heavy machinegun</td><td>+3</td><td>Short</td><td>3</td><td>Long</td><td>#</td><td>Full Auto, typically mounted</td></tr>
+                                <tr><td>Neodymium cannon</td><td>+ (Network)</td><td>Medium</td><td>4</td><td>Long</td><td>#</td><td>Drone/Vehicle mounted, uses Neurocaster Network</td></tr>
+                                <tr><td>Molotov cocktail</td><td>-</td><td>Engaged</td><td>Blast 6</td><td>Medium</td><td>-</td><td>Causes Fire (Intensity 6)</td></tr>
+                                <tr><td>Hand grenade</td><td>-</td><td>Engaged</td><td>Blast 8</td><td>Medium</td><td>#</td><td>Explosive</td></tr>
+                                <tr><td>Mortar</td><td>+2</td><td>Medium</td><td>Blast 12</td><td>Extreme</td><td>#</td><td>Indirect fire, explosive</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="mt-2"><em># Cannot be purchased commercially. Full Auto: Can fire multiple bursts if successful (p.81). Single-Shot: Requires reload action.</em></p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Body Armor (p.83)</summary>
+                    <div class="entry-content">
+                        <table class="data-table">
+                            <thead><tr><th>Armor Type</th><th>Armor Level</th><th>Agility Mod</th><th>Price</th></tr></thead>
+                            <tbody>
+                                <tr><td>Soft vest</td><td>2</td><td>-1</td><td>$150</td></tr>
+                                <tr><td>Plate vest</td><td>4</td><td>-2</td><td>$300</td></tr>
+                                <tr><td>Riot gear</td><td>6</td><td>-3</td><td>$500</td></tr>
+                            </tbody>
+                        </table>
+                        <p>When hit, roll dice = Armor Level. Each <code>6</code> negates 1 damage.</p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Neurocasters (p.92)</summary>
+                    <div class="entry-content">
+                        <table class="data-table">
+                            <thead><tr><th>Name</th><th>Processor</th><th>Network</th><th>Graphics</th><th>Cost</th><th>Notes</th></tr></thead>
+                            <tbody>
+                                <tr><td>Stimulus TLE Standard</td><td>+2</td><td>+2</td><td>+2</td><td>$700</td><td></td></tr>
+                                <tr><td>Stimulus GO</td><td>+2</td><td>+2</td><td>+1</td><td>$600</td><td>Only -1 die to real world actions</td></tr>
+                                <tr><td>Johnny Jolt Theme</td><td>+1</td><td>+2</td><td>+3</td><td>$500</td><td>Popular with gamers</td></tr>
+                                <tr><td>Stimulus TLE-PRO</td><td>+3</td><td>+3</td><td>+3</td><td>$1,300</td><td>High-end model</td></tr>
+                                <tr><td>Jury-Rigged</td><td>+1</td><td>+1</td><td>+1</td><td>Varies</td><td>Unreliable, prone to glitches</td></tr>
+                            </tbody>
+                        </table>
+                        <p>Attributes provide gear dice for neurocasting actions. Damage from pushing rolls can reduce these attributes.</p>
+                    </div>
+                </details>
+                 <details class="scrapbook-entry scrapbook-entry-full-width">
+                    <summary class="entry-title">General Gear & Supplies (p.63, 109)</summary>
+                    <div class="entry-content table-container">
+                         <p>A selection of common items. Refer to PDF for full list and details.</p>
+                        <table class="data-table">
+                            <thead><tr><th>Item</th><th>Bonus/Effect</th><th>Cost</th><th>Notes</th></tr></thead>
+                            <tbody>
+                                <tr><td>Tools, general</td><td>+1 to repair rolls</td><td>$25</td><td></td></tr>
+                                <tr><td>Tools, vehicle</td><td>+2 to vehicle repair</td><td>$50</td><td></td></tr>
+                                <tr><td>First aid kit</td><td>+3 to Medic talent rolls</td><td>$25</td><td>5 uses. Stabilizes.</td></tr>
+                                <tr><td>Surgical instruments</td><td>+2 to Surgeon talent rolls</td><td>$100</td><td></td></tr>
+                                <tr><td>Bottle of hard liquor</td><td>Recover 1 Hope (-1 Health)</td><td>$5</td><td>3 uses.</td></tr>
+                                <tr><td>Binoculars</td><td>+2 WITS to spot at distance</td><td>$100</td><td></td></tr>
+                                <tr><td>Neurine ("dream glint")</td><td>Recover 1 Hope. Risk addiction.</td><td>$20/dose</td><td></td></tr>
+                                <tr><td>Canned food</td><td>Covers 1 day food need</td><td>$5</td><td></td></tr>
+                                <tr><td>Clothes, outdoor</td><td>Prevents Cold effects</td><td>$50</td><td></td></tr>
+                                <tr><td>Sleeping bag</td><td>Comfortable sleep outdoors</td><td>$25</td><td>Prevents sleep deprivation.</td></tr>
+                                <tr><td>Walkman</td><td>Recover 1 Hope (listen Stretch)</td><td>$45</td><td></td></tr>
+                                <tr><td>Gasoline (gallon)</td><td>Fuel for vehicles</td><td>$1 (approx)</td><td>Car ~20 miles/gallon.</td></tr>
+                                <tr><td>Vanadium Redox battery</td><td>Powers drones, neurocasters</td><td>$50*</td><td>*Not commercially available.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div id="npcs" class="tab-content">
+            <h2 class="page-section-title">PERSONNEL_FILES</h2>
+            <div class="content-grid">
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Minor NPCs (p.151)</summary>
+                    <div class="entry-content">
+                        <p><strong>Default Stats:</strong> All Attributes 3. May have one relevant Talent.<br><strong>Key Elements:</strong> Name, Function/Role, Quirk (memorable detail).<br><em>Example Quirks (D66, PDF p.151): Bloodshot eyes, Wears neurocaster, Chain smoker, Oddly shaped glasses, Constantly humming.</em></p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">NPC Reactions & Morale (p.131)</summary>
+                    <div class="entry-content">
+                        <h4>Initial Reaction (2D6)</h4>
+                        <ul><li>2: Hostile</li><li>3-5: Unfriendly</li><li>6-8: Neutral</li><li>9-11: Friendly</li><li>12: Eager to help</li></ul>
+                        <h4>Combat Morale (2D6)</h4>
+                        <p>(When friend Incapacitated or facing overwhelming odds)</p>
+                        <ul><li>2: Flee</li><li>3: Surrender</li><li>4-5: Retreat or negotiate</li><li>6-12: Keep fighting</li></ul>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title"><span class="sparkle">✨</span> NPC Detail Generator</summary>
+                    <div class="entry-content">
+                        <input type="text" id="npcKeywords" class="gemini-input" placeholder="NPC Archetype/Keywords (e.g., Wary Scavenger)">
+                        <button id="generateNpcBtn" class="gemini-button">Generate Details</button>
+                        <div id="npcLoading" class="loading-indicator" style="display: none;">Generating NPC_DATA...</div>
+                        <div id="npcError" class="error-message" style="display: none;">Error fetching NPC_DATA.</div>
+                        <div id="npcOutput" class="generated-content entry-text"></div>
+                    </div>
+                </details>
+                 <details class="scrapbook-entry scrapbook-entry-full-width">
+                    <summary class="entry-title">Notable NPC Archetypes (from Chapter 7 & general lore)</summary>
+                    <div class="entry-content">
+                        <h4>Agent Jack Simone (PBI) (p.160)</h4>
+                        <p><strong>Stats:</strong> STR 5, AGI 6, WITS 5, EMP 3, Health 6. Gear: Chrysler Vision, handgun, $500.<br><strong>Role:</strong> Man of duty, increasingly conflicted by Sentre's influence. Can be antagonist or potential ally.</p>
+                        <h4>Mr. Pink (Sentre/Convergence) (p.160)</h4>
+                        <p><strong>Stats:</strong> STR 4, AGI 6, WITS 6, EMP 5, Health 5. Gear: Handgun, Stimulus TLE-PRO, Elite Trooper Gaming Drone, $500.<br><strong>Role:</strong> Enigmatic, high-level operative. Ruthless and dangerous.</p>
+                        <h4>Pacifica Highway Patrol (p.160)</h4>
+                        <p><strong>Stats:</strong> STR 4, AGI 4, WITS 3, EMP 3, Health 4. Gear: Handgun/shotgun, patrol car.<br><strong>Role:</strong> Variable; can be corrupt, dutiful, or overwhelmed.</p>
+                        <h4>Sentre Agents (p.160)</h4>
+                        <p><strong>Stats:</strong> STR 4, AGI 5, WITS 3, EMP 2, Health 5. Gear: Handgun/assault rifle, black van.<br><strong>Role:</strong> Corporate enforcers, often well-equipped and loyal to Sentre's objectives.</p>
+                        <p><em>(For specific NPCs from "Into the Dust" journey like Ramona Lopez, Father Marcos, Jimmy Shute etc., refer to pages 176-179, 188-189, 199-203 of the PDF for their detailed backstories, stats, and roles within those specific Stops.)</em></p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div id="world" class="tab-content">
+            <h2 class="page-section-title">WORLD_LORE_DATABASE</h2>
+            <div class="content-grid">
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">The Setting: Alternate 1997 (p.10, 20-22)</summary>
+                    <div class="entry-content">
+                        <p>The year is 1997. The USA was fractured by a devastating Civil War (1975-1984). Society is in slow collapse, with widespread decay and infrastructure breakdown. Many seek escape in neuronics. The '90s pop culture is present but juxtaposed with advanced, often dangerous, technology and a bleak future.</p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Neuronics Deep Dive (p.31-37)</summary>
+                    <div class="entry-content">
+                        <h4>Core Concept</h4>
+                        <p>Technology mimicking human brain functions, enabling direct mind-machine interface.</p>
+                        <h4>Drones (p.31, 98)</h4>
+                        <p>Remotely piloted machines, from household units to massive war machines. Key part of the Civil War.</p>
+                        <h4>Robots (p.32, 98)</h4>
+                        <p>Automated machines, less precise than drones. Used for labor, guard duty. Some rumored to be evolving.</p>
+                        <h4>Neurocasters (p.32, 90)</h4>
+                        <p>Helmet-like devices to access networks, pilot drones, enter neuroscapes. Require neurine and Vanadium Redox batteries. <strong>Mode 6 (p.34)</strong> update (1996) made neuroscapes hyper-addictive.</p>
+                        <h4>Neuroscapes (p.33, 92)</h4>
+                        <p>Vivid virtual worlds. Can be local or global. Highly addictive, leading many to abandon reality.</p>
+                        <h4>Neurine (p.34, 109)</h4>
+                        <p>Chemical for neurocasters, also a highly addictive drug ("dream glint").</p>
+                        <h4>Techno Cults (p.34)</h4>
+                        <p>Groups worshipping machines or network entities. <strong>The Convergence (p.36)</strong> is a major, secretive cult worshipping an "Intercerebral Divinity," linked to stillbirths among drone pilots and strange phenomena.</p>
+                        <h4>Drone Growths & Intercerebral Intelligences (p.34, 97, 149)</h4>
+                        <p>Monstrous, jury-rigged drones appearing in the wastes. Possibly physical forms of AIs (Intercerebral Intelligences) born in neuroscapes.</p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Pacifica In Detail (p.38-44)</summary>
+                    <div class="entry-content">
+                        <p>Formerly California. Officially a republic led by President Latoya Griffin, but heavily influenced (controlled) by Sentre Corp. Capital: Sacramento. Largest city: Los Angeles.</p>
+                        <h4>Key Locations:</h4>
+                        <ul>
+                            <li><strong>Los Angeles:</strong> Rebuilt Hollywood, Sentre skyscraper HQ. Neurograph towers are ubiquitous. High contrast between wealth and decay. Rumors of secret corporate experiments.</li>
+                            <li><strong>Sacramento:</strong> Political/economic center. Largest neurograph tower. Rapid growth from refugees.</li>
+                            <li><strong>San Francisco:</strong> More freedom, fewer neuro-towers, lower addiction rates. Hub for free-thinkers, artists. Notable library system.</li>
+                            <li><strong>North & East (Sierra Nevada, Yosemite):</strong> Less law, some unspoiled nature. Rumors of mutated plants resisting neuro-tech in Yosemite. Shanty towns (e.g., Lake Tahoe). "Bird Heads" (anti-neurotech veterans) near Happy Camp.</li>
+                            <li><strong>Coast & Islands:</strong> Small communities, some with unique local neuroscapes. Morro Bay: techno-monks creating virtual Heaven. Channel Islands: rumors of old military bases, experimental weapon sites. Big Sur: rebel groups.</li>
+                        </ul>
+                        <h4>Problems:</h4>
+                        <p>Earthquakes, wildfires, pollution from Nevada desert, water shortages, diseases (e.g., Rot Eyes), social unrest, heavily armed militias.</p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Major Corporations (p.44)</summary>
+                    <div class="entry-content">
+                        <ul>
+                            <li><strong>Sentre:</strong> Multinational, dominates all neuro-technology. Run by Valeria Lopez (rarely seen). Their logo (eye with red S) is everywhere.</li>
+                            <li><strong>Happy-Cool:</strong> Neurocasters/neuroscapes for kids. Symbol: smiling yellow head. Expanding to elderly, pets.</li>
+                            <li><strong>LifeBuddy:</strong> "Assisted afterlife" services. Controversial contracts for elderly. Avatars of the "departed" met in neuroscapes.</li>
+                            <li><strong>Grizzly Burger:</strong> Major food supplier. Rumored to use actual grizzly meat in 1/100 burgers.</li>
+                        </ul>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Other Nations (Post-USA) (p.46-47)</summary>
+                    <div class="entry-content">
+                        <ul>
+                            <li><strong>Northern Union:</strong> (WA, OR) Fragile democracy, linked to Pacifica. Rumored anti-addiction research labs angering Pacifica.</li>
+                            <li><strong>Blackwelt Exclusion Zone:</strong> (NV) Mostly desert, ruins from drone bombardments. Some communities thrive (Henderson, Reno, parts of Vegas). Underground market for restored luxury goods.</li>
+                            <li><strong>Libertania:</strong> (UT, CO, AZ, NM) Relatively stable, guards southern border. Addison Art Retreat (Santa Fe) focuses on neuro-art.</li>
+                            <li><strong>South Republic:</strong> (TX, LA, OK+) Sees itself as true USA remnant. High Sentre neurocaster adoption, now crumbling fast due to Mode 6 addiction.</li>
+                            <li><strong>Canada:</strong> Strengthened, capital Toronto. Suspicious of neuro-tech, financial problems, illegal neuro-tech smuggling.</li>
+                            <li><strong>Mexico:</strong> Dominated by warlords, constant clashes. Porous border with Pacifica, issues with neurine labs.</li>
+                        </ul>
+                    </div>
+                </details>
+                 <details class="scrapbook-entry">
+                    <summary class="entry-title"><span class="sparkle">✨</span> Rumor Mill // Broadcast Fragments</summary>
+                     <div class="entry-content">
+                        <button id="generateRumorsBtn" class="gemini-button">Scan for Transmissions</button>
+                        <div id="rumorsLoading" class="loading-indicator" style="display: none;">Scanning...</div>
+                        <div id="rumorsError" class="error-message" style="display: none;">Signal Lost. Try again.</div>
+                        <ul id="rumorsOutput" class="generated-content entry-text"></ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div id="journey" class="tab-content">
+            <h2 class="page-section-title">JOURNEY_PLANNING_PROTOCOLS</h2>
+            <div class="content-grid">
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Planning the Journey (p.112-117)</summary>
+                    <div class="entry-content">
+                        <ol>
+                            <li><strong>Starting Point & Destination:</strong> Choose based on Pacifica map (Ch.2) and Traveler Dreams.</li>
+                            <li><strong>Route:</strong> Mark on map. Decide player control over route (fixed vs. flexible).</li>
+                            <li><strong>Journey Length (p.114):</strong> One-shot (1 Stop), Short (2-4), Medium (4-7), Long (8-12). Affects pacing and Threat introduction.</li>
+                            <li><strong>Personal Goals (p.62, 114):</strong> Specific objectives for each Traveler, tied to their Dream and often the Destination. Add a "Kicker" (inciting incident).</li>
+                            <li><strong>Personal Threats (p.62, 115):</strong> Obstacles/antagonists for each Traveler, linked to their Goal. Each has a GM-designed Countdown of escalating events.</li>
+                            <li><strong>Vehicle (p.62, 101):</strong> Describe type, model, traits. Starts with half tank fuel. Shared items (PDF p.63).</li>
+                        </ol>
+                    </div>
+                </details>
+                <details class="scrapbook-entry scrapbook-entry-full-width">
+                    <summary class="entry-title">Preparing Stops (p.118-127)</summary>
+                    <div class="entry-content">
+                        <p>A Stop is a limited area, focus of 1-3 sessions. Key elements:</p>
+                        <ul>
+                            <li><strong>Setting (p.118):</strong> Location, environment, population, mood. Use tables (PDF p.119-120) for terrain, population, communication, size, prosperity, weather. Add Electric State elements & '90s nostalgia (PDF p.120).</li>
+                            <li><strong>Blocker (p.123):</strong> What makes Travelers stop (e.g., roadblock, vehicle malfunction, urgent need). Can be hard or soft. Table on PDF p.122.</li>
+                            <li><strong>Needs (p.123):</strong> Traveler requirements (food, fuel, safety, info). Table on PDF p.122.</li>
+                            <li><strong>The Situation (p.123):</strong> Background, current conflicts at the Stop. Conflict generator table on PDF p.124.</li>
+                            <li><strong>Threats (p.123, Ch.6):</strong> Antagonists at the Stop. Types: Violent, Manipulative, Technological, Environmental, Past Sins, Personal.</li>
+                            <li><strong>Countdown (p.125):</strong> Escalating events triggered by GM to advance plot. Examples: Threat presentation, attack, lies spread, victims appear, sabotage, capture, deal offered.</li>
+                            <li><strong>Locations (p.126):</strong> Key places within the Stop. Map them out. Example locations table on PDF p.126.</li>
+                        </ul>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Playing the Stop (p.128-133)</summary>
+                    <div class="entry-content">
+                        <h4>Starting a Stop Session</h4>
+                        <p>Set scene before arrival, discuss Travelers' status, roleplay journey, describe arrival at Blocker.</p>
+                        <h4>GM Responsibilities</h4>
+                        <p>React to players, activate Threats/Countdown, use NPCs (rumors, help requests), point out Needs, cut scenes. Maintain pacing. (GM "What To Do?" list PDF p.128)</p>
+                        <h4>Making it Come Alive (p.132)</h4>
+                        <p>Use sensory details, themes, ask players questions, add twists, '90s nostalgia, Electric State elements, NPC voices, show art, maintain mystery. Emphasize "World is Falling Apart" theme.</p>
+                        <h4>Information Gathering (p.133)</h4>
+                        <p>Encourage NPC interaction or neurocasting. Improvise info not in prep.</p>
+                        <h4>Neuroscape Scenes (p.133)</h4>
+                        <p>Keep brief if solo Traveler. Describe using Type, Theme, Mood (table PDF p.133). Focus on objectives like finding info or hacking.</p>
+                    </div>
+                </details>
+                <details class="scrapbook-entry">
+                    <summary class="entry-title">Ending the Journey (p.118)</summary>
+                    <div class="entry-content">
+                        <p>Travelers reach Destination, resolve (or fail) Personal Goals. Players narrate outcomes. Optional: Roll 3D6 per Traveler for significant future life events (high=good, low=bad).</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <div id="journey_generator" class="tab-content">
+            <h2 class="page-section-title"><span class="text-yellow-400">✨</span> JOURNEY_CONSTRUCTION_MODULE <span class="text-yellow-400">✨</span></h2>
+            <div class="content-grid-full">
+                <details class="scrapbook-entry" open> <summary class="entry-title">Journey Parameters Input</summary>
+                    <div class="entry-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="startLocation" class="gemini-label">Start Location:</label>
+                                <input type="text" id="startLocation" class="gemini-input" placeholder="e.g., San Francisco Memorial City, a dusty Mojave outpost">
+                            </div>
+                            <div>
+                                <label for="endDestination" class="gemini-label">End Destination:</label>
+                                <input type="text" id="endDestination" class="gemini-input" placeholder="e.g., The Blackwelt Exclusion Zone, a mythical Sentre server farm">
+                            </div>
+                            <div>
+                                <label for="journeyLength" class="gemini-label">Journey Length (Est. Stops):</label>
+                                <select id="journeyLength" class="gemini-select">
+                                    <option value="Short">Short (2-3 Stops)</option>
+                                    <option value="Medium" selected>Medium (4-5 Stops)</option>
+                                    <option value="Long">Long (6-7 Stops)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="journeyTheme" class="gemini-label">Overall Theme/Mood:</label>
+                                <input type="text" id="journeyTheme" class="gemini-input" placeholder="e.g., desperate survival, strange tech mystery, road trip horror">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="travelerArchetypes" class="gemini-label">Key Traveler Archetypes (comma-separated):</label>
+                            <input type="text" id="travelerArchetypes" class="gemini-input" placeholder="e.g., Veteran, Scientist, Runaway Kid">
+                        </div>
+                        <div class="mt-4">
+                            <button id="generateJourneyBtn" class="gemini-button">Generate Journey Outline</button>
+                            <button id="clearJourneyBtn" class="gemini-button gemini-button-secondary">Clear Outline</button>
+                        </div>
+                        <div id="journeyLoading" class="loading-indicator" style="display: none;">CONSTRUCTING_ROUTE_MATRIX...</div>
+                        <div id="journeyError" class="error-message" style="display: none;">ROUTE_CALCULATION_ERROR. SYSTEM_UNSTABLE.</div>
+                    </div>
+                </details>
+                <div id="journeyOutput" class="generated-content">
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function setActiveTab(tabId) {
+            localStorage.setItem('activeElectricStateTrackerTab', tabId);
+        }
+
+        function getActiveTab() {
+            return localStorage.getItem('activeElectricStateTrackerTab');
+        }
+
+        function showTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            const selectedContent = document.getElementById(tabId);
+            if (selectedContent) selectedContent.classList.add('active');
+
+            const selectedButton = Array.from(buttons).find(button => button.getAttribute('onclick').includes(`'${tabId}'`));
+            if (selectedButton) selectedButton.classList.add('active');
+            
+            setActiveTab(tabId);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const lastActiveTab = getActiveTab();
+            if (lastActiveTab) {
+                showTab(lastActiveTab);
+            } else {
+                showTab('mechanics'); 
+            }
+
+            const npcKeywordsInput = document.getElementById('npcKeywords');
+            const generateNpcBtn = document.getElementById('generateNpcBtn');
+            const npcOutputDiv = document.getElementById('npcOutput');
+            const npcLoadingDiv = document.getElementById('npcLoading');
+            const npcErrorDiv = document.getElementById('npcError');
+
+            const generateRumorsBtn = document.getElementById('generateRumorsBtn');
+            const rumorsOutputUl = document.getElementById('rumorsOutput');
+            const rumorsLoadingDiv = document.getElementById('rumorsLoading');
+            const rumorsErrorDiv = document.getElementById('rumorsError');
+            
+            const generateJourneyBtn = document.getElementById('generateJourneyBtn');
+            const clearJourneyBtn = document.getElementById('clearJourneyBtn');
+            const journeyOutputDiv = document.getElementById('journeyOutput');
+            const journeyLoadingDiv = document.getElementById('journeyLoading');
+            const journeyErrorDiv = document.getElementById('journeyError');
+
+            const apiKey = ""; 
+
+            if (generateNpcBtn) {
+                generateNpcBtn.addEventListener('click', async () => {
+                    const keywords = npcKeywordsInput.value.trim();
+                    if (!keywords) {
+                        npcOutputDiv.innerHTML = '<p class="error-message">INPUT NPC ARCHETYPE/KEYWORDS.</p>';
+                        return;
+                    }
+                    npcLoadingDiv.style.display = 'block';
+                    npcErrorDiv.style.display = 'none';
+                    npcOutputDiv.innerHTML = '';
+                    const prompt = `Generate detailed NPC information for The Electric State RPG based on the following archetype/keywords: "${keywords}". The NPC should fit a gritty, post-civil war, alternate 1997 setting where advanced neuronics and societal decay are prevalent. Provide a name, a brief appearance snippet, their core motivation, a compelling secret, and a distinctive quirk.`;
+                    const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                    const payload = {
+                        contents: chatHistory,
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: {
+                                type: "OBJECT",
+                                properties: {
+                                    "name": { "type": "STRING", "description": "A fitting name for the NPC." },
+                                    "appearance_snippet": { "type": "STRING", "description": "A brief, evocative visual detail about the NPC." },
+                                    "core_motivation": { "type": "STRING", "description": "The NPC's primary driving goal or desire." },
+                                    "secret": { "type": "STRING", "description": "A hidden piece of information or aspect of the NPC." },
+                                    "quirk": { "type": "STRING", "description": "A distinctive habit, mannerism, or unusual trait." }
+                                },
+                                required: ["name", "appearance_snippet", "core_motivation", "secret", "quirk"]
+                            }
+                        }
+                    };
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    try {
+                        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                        if (!response.ok) throw new Error(`API_REQUEST_FAIL: ${response.status}`);
+                        const result = await response.json();
+                        if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
+                            const jsonText = result.candidates[0].content.parts[0].text;
+                            const npcData = JSON.parse(jsonText);
+                            npcOutputDiv.innerHTML = `<p><strong>ID_TAG:</strong> ${npcData.name || 'N/A'}</p><p><strong>VISUAL_SCAN:</strong> ${npcData.appearance_snippet || 'N/A'}</p><p><strong>PRIMARY_DRIVE:</strong> ${npcData.core_motivation || 'N/A'}</p><p><strong>CLASSIFIED_DATA:</strong> ${npcData.secret || 'N/A'}</p><p><strong>ANOMALY_NOTE:</strong> ${npcData.quirk || 'N/A'}</p>`;
+                        } else throw new Error("INVALID_API_RESPONSE_STRUCTURE.");
+                    } catch (error) {
+                        console.error("NPC_GENERATION_ERROR:", error);
+                        npcErrorDiv.textContent = `ERROR: ${error.message}. CHECK_CONSOLE.`;
+                        npcErrorDiv.style.display = 'block';
+                        npcOutputDiv.innerHTML = '';
+                    } finally {
+                        npcLoadingDiv.style.display = 'none';
+                    }
+                });
+            }
+
+            if (generateRumorsBtn) {
+                generateRumorsBtn.addEventListener('click', async () => {
+                    rumorsLoadingDiv.style.display = 'block';
+                    rumorsErrorDiv.style.display = 'none';
+                    rumorsOutputUl.innerHTML = '';
+                    const prompt = `Generate 3 distinct, unsettling, and atmospheric rumors that characters might overhear in the world of The Electric State RPG. These rumors should touch upon themes of strange technology, societal collapse, neuronics, mysterious corporations like Sentre, or unexplained phenomena in Pacifica. Each rumor should be a single, concise sentence or two, and start with a phrase like "Heard whispers that..." or "They say out west..." or "Someone on the radio was saying...".`;
+                    const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                    const payload = { contents: chatHistory };
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    try {
+                        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                        if (!response.ok) throw new Error(`API_REQUEST_FAIL: ${response.status}`);
+                        const result = await response.json();
+                        if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
+                            const text = result.candidates[0].content.parts[0].text;
+                            const rumorArray = text.split('\n').map(r => r.trim()).filter(r => r !== '' && !r.match(/^\d+\.\s*/));
+                            if (rumorArray.length > 0) {
+                                rumorArray.forEach(rumor => { const li = document.createElement('li'); li.textContent = rumor.replace(/^- /, ''); rumorsOutputUl.appendChild(li); });
+                            } else if (text.trim() !== '') { const li = document.createElement('li'); li.textContent = text.replace(/^- /, ''); rumorsOutputUl.appendChild(li); }
+                            else { rumorsOutputUl.innerHTML = '<li>No distinct rumors found in response.</li>'; }
+                        } else throw new Error("INVALID_API_RESPONSE_STRUCTURE.");
+                    } catch (error) {
+                        console.error("RUMOR_GENERATION_ERROR:", error);
+                        rumorsErrorDiv.textContent = `ERROR: ${error.message}. CHECK_CONSOLE.`;
+                        rumorsErrorDiv.style.display = 'block';
+                        rumorsOutputUl.innerHTML = '';
+                    } finally {
+                        rumorsLoadingDiv.style.display = 'none';
+                    }
+                });
+            }
+
+            if (generateJourneyBtn) {
+                generateJourneyBtn.addEventListener('click', async () => {
+                    const startLoc = document.getElementById('startLocation').value.trim();
+                    const endDest = document.getElementById('endDestination').value.trim();
+                    const length = document.getElementById('journeyLength').value;
+                    const theme = document.getElementById('journeyTheme').value.trim();
+                    const archetypes = document.getElementById('travelerArchetypes').value.trim();
+
+                    if (!startLoc || !endDest || !theme) {
+                        journeyOutputDiv.innerHTML = '<details class="scrapbook-entry" open><summary class="entry-title">Generation Error</summary><div class="entry-content error-message">Please fill in Start Location, End Destination, and Theme.</div></details>';
+                        return;
+                    }
+
+                    journeyLoadingDiv.style.display = 'block';
+                    journeyErrorDiv.style.display = 'none';
+                    journeyOutputDiv.innerHTML = '';
+
+                    let numStops = 3;
+                    if (length === "Medium") numStops = 5;
+                    if (length === "Long") numStops = 7;
+
+                    const prompt = `
+                        Generate a journey outline for "The Electric State RPG".
+                        The setting is a post-civil war, alternate 1997 America characterized by societal decay, advanced neuronics, and strange phenomena.
+                        Journey Parameters:
+                        - Start Location: ${startLoc}
+                        - End Destination: ${endDest}
+                        - Estimated Number of Stops: ${numStops} (This is a ${length} journey)
+                        - Overall Theme/Mood: ${theme}
+                        - Key Traveler Archetypes involved (if any, to tailor challenges): ${archetypes || "General group of Travelers"}
+
+                        The output MUST be a JSON object following the provided schema.
+                        Each stop should be distinct and thematic to The Electric State.
+                        The overarching threat should be compelling and tie into the game's core themes.
+                        Neuroscape elements should be creative and integrated where appropriate.
+                    `;
+
+                    const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                    const journeySchema = {
+                        type: "OBJECT",
+                        properties: {
+                            "journey_title": { "type": "STRING", "description": "An evocative title for this journey." },
+                            "journey_logline": { "type": "STRING", "description": "A one or two sentence summary of the journey." },
+                            "inciting_incident": { "type": "STRING", "description": "The event that kicks off the journey for the Travelers." },
+                            "main_overarching_threat_or_mystery": { "type": "STRING", "description": "The primary antagonist force or central mystery driving the journey." },
+                            "estimated_stops_count": { "type": "INTEGER", "description": "The number of stops generated." },
+                            "stops_details": {
+                                "type": "ARRAY",
+                                "description": "Details for each stop along the journey.",
+                                "items": {
+                                    "type": "OBJECT",
+                                    "properties": {
+                                        "stop_number": { "type": "INTEGER" },
+                                        "stop_name_location_description": { "type": "STRING", "description": "A name and brief description of the stop's location and atmosphere." },
+                                        "blocker_reason_to_stop": { "type": "STRING", "description": "Why the Travelers are forced to stop or investigate here." },
+                                        "core_situation_conflict": { "type": "STRING", "description": "The main problem, conflict, or situation unfolding at this stop." },
+                                        "key_threat_or_npc_encounter": { "type": "STRING", "description": "A significant threat, NPC, or encounter at this stop." },
+                                        "potential_neuroscape_element": { "type": "STRING", "description": "How a neuroscape, neurocaster, or neuronics could be involved here (e.g., finding clues, a trap, a local network)." }
+                                    },
+                                    "required": ["stop_number", "stop_name_location_description", "blocker_reason_to_stop", "core_situation_conflict", "key_threat_or_npc_encounter"]
+                                }
+                            },
+                            "potential_climax_resolution_idea": { "type": "STRING", "description": "A brief idea for how the journey might culminate or resolve." }
+                        },
+                        required: ["journey_title", "journey_logline", "inciting_incident", "main_overarching_threat_or_mystery", "stops_details", "potential_climax_resolution_idea"]
+                    };
+
+                    const payload = {
+                        contents: chatHistory,
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: journeySchema
+                        }
+                    };
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                        if (!response.ok) throw new Error(`API_REQUEST_FAIL: ${response.status}`);
+                        const result = await response.json();
+
+                        if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
+                            const jsonText = result.candidates[0].content.parts[0].text;
+                            const journeyData = JSON.parse(jsonText);
+                            
+                            let htmlOutput = `<details class="scrapbook-entry" open><summary class="entry-title">Journey Outline: ${journeyData.journey_title || 'Untitled Journey'}</summary><div class="entry-content">`;
+                            htmlOutput += `<p><strong>Logline:</strong> ${journeyData.journey_logline || 'N/A'}</p>`;
+                            htmlOutput += `<p><strong>Inciting Incident:</strong> ${journeyData.inciting_incident || 'N/A'}</p>`;
+                            htmlOutput += `<p><strong>Main Threat/Mystery:</strong> ${journeyData.main_overarching_threat_or_mystery || 'N/A'}</p>`;
+                            htmlOutput += `<p><strong>Estimated Stops:</strong> ${journeyData.estimated_stops_count || journeyData.stops_details.length}</p>`;
+                            htmlOutput += `</div></details>`;
+
+                            journeyData.stops_details.forEach(stop => {
+                                htmlOutput += `<details class="scrapbook-entry"><summary class="entry-title">Stop ${stop.stop_number}: ${stop.stop_name_location_description.substring(0,50)}...</summary><div class="entry-content">`;
+                                htmlOutput += `<h4>Location & Atmosphere</h4><p>${stop.stop_name_location_description || 'N/A'}</p>`;
+                                htmlOutput += `<h4>Blocker / Reason to Stop</h4><p>${stop.blocker_reason_to_stop || 'N/A'}</p>`;
+                                htmlOutput += `<h4>Core Situation / Conflict</h4><p>${stop.core_situation_conflict || 'N/A'}</p>`;
+                                htmlOutput += `<h4>Key Threat / NPC Encounter</h4><p>${stop.key_threat_or_npc_encounter || 'N/A'}</p>`;
+                                if(stop.potential_neuroscape_element) {
+                                    htmlOutput += `<h4>Neuroscape Element</h4><p>${stop.potential_neuroscape_element}</p>`;
+                                }
+                                htmlOutput += `</div></details>`;
+                            });
+                            htmlOutput += `<details class="scrapbook-entry"><summary class="entry-title">Potential Climax/Resolution</summary><div class="entry-content"><p>${journeyData.potential_climax_resolution_idea || 'N/A'}</p></div></details>`;
+                            journeyOutputDiv.innerHTML = htmlOutput;
+
+                        } else throw new Error("INVALID_API_RESPONSE_STRUCTURE_FOR_JOURNEY.");
+                    } catch (error) {
+                        console.error("JOURNEY_GENERATION_ERROR:", error);
+                        journeyErrorDiv.textContent = `ERROR: ${error.message}. CHECK_CONSOLE.`;
+                        journeyErrorDiv.style.display = 'block';
+                        journeyOutputDiv.innerHTML = '';
+                    } finally {
+                        journeyLoadingDiv.style.display = 'none';
+                    }
+                });
+            }
+            if(clearJourneyBtn) {
+                clearJourneyBtn.addEventListener('click', () => {
+                    journeyOutputDiv.innerHTML = '';
+                    document.getElementById('startLocation').value = '';
+                    document.getElementById('endDestination').value = '';
+                    document.getElementById('journeyTheme').value = '';
+                    document.getElementById('travelerArchetypes').value = '';
+                    document.getElementById('journeyLength').value = 'Medium';
+                    journeyErrorDiv.style.display = 'none';
+                });
+            }
+
+
+        });
+    </script>
+</body>
+</html>
+
+

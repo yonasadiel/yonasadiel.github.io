@@ -147,6 +147,8 @@ const TravelerSheet = ({ traveler, isOwnedTraveler, onSwitchToOwnedTraveler, onS
                 {item.type === 'gear' && (
                   <>
                     <p className="text-sm text-gray-600">{item.description}</p>
+                    <p className="text-sm text-gray-600"><strong>Bonus</strong>: {item.bonus === undefined ? '-' : withSign(item.bonus)}</p>
+                    <p className="text-sm text-gray-600"><strong>Used</strong>: {item.used === undefined ? 'inf' : item.used}</p>
                     <p className="text-sm text-gray-600"><strong>Price:</strong> ${item.price}</p>
                   </>
                 )}
