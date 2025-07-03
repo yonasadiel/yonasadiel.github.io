@@ -5,8 +5,7 @@ import Book from 'app/electric-state/_components/book/Book';
 import FadeInImage from 'app/electric-state/_components/Image';
 import WelcomePage from 'app/electric-state/_components/WelcomePage';
 import { convertSessionIdToTitle } from 'app/electric-state/_lib';
-import { useGetSessionDataQuery } from 'app/electric-state/_lib/sessionApi';
-import { SessionData } from 'app/electric-state/_lib/type';
+import { useSessionData } from 'app/electric-state/_lib/hooks/useSessionData';
 import { Open_Sans } from 'next/font/google';
 import { useState } from 'react';
 
@@ -22,20 +21,11 @@ const openSans = Open_Sans({
 
 export default function HecateServerPage({ sessionId, travelerName, token }: HecatePageProps) {
   const [showBook, setShowBook] = useState(false);
-  const {
-    data: sessionData,
-    isLoading,
-    error
-  } = useGetSessionDataQuery(
-    { sessionId, travelerName: travelerName || '', token: token || '' },
-    { skip: !travelerName || !token }
-  );
-
-  const errorMessage = !travelerName || !token
-    ? 'This is a page to play Electric State RPG.'
-    : error
-    ? 'Failed fetching session data.'
-    : '';
+  const { sessionData, isLoading, error } = useSessionData({
+    sessionId,
+    travelerName,
+    token,
+  });
 
   return (
     <div className={`${styles.hecate} ${openSans.className}`}>
@@ -46,7 +36,7 @@ export default function HecateServerPage({ sessionId, travelerName, token }: Hec
         <WelcomePage
           title={convertSessionIdToTitle(sessionId)}
           travelerName={travelerName || 'traveler'}
-          error={errorMessage}
+          error={error}
           loading={isLoading}
           onStart={() => setShowBook(true)} />
       </div>

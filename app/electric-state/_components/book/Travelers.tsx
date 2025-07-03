@@ -104,8 +104,8 @@ const TravelerSheet = ({ traveler, isOwnedTraveler, onSwitchToOwnedTraveler, onS
             <span className="ml-3 w-full h-0 border-b-4 border-black" />
           </div>
           <div className="grid grid-cols-2">
-            <p className="mb-0"><strong>Health:</strong> {traveler.state.health}</p>
-            <p className="mb-0"><strong>Hope:</strong> {traveler.state.hope}</p>
+            <p className="mb-0"><strong>Health:</strong> {traveler.state.health} / {Math.ceil((traveler.stats.str + traveler.stats.agi) / 2)}</p>
+            <p className="mb-0"><strong>Hope:</strong> {traveler.state.hope} / {Math.ceil((traveler.stats.wit + traveler.stats.emp) / 2)}</p>
             <p className="mb-0"><strong>Bliss:</strong> {traveler.state.bliss}</p>
             <p className="mb-0"><strong>Cash:</strong> ${traveler.state.cash}</p>
           </div>
