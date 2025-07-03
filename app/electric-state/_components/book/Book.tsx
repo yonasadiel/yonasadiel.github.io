@@ -23,7 +23,6 @@ const BOOKMARKS = [
   BOOKMARK_STORY,
   BOOKMARK_TRAVELERS,
   BOOKMARK_MAP,
-  BOOKMARK_COMBAT,
 ]
 
 export default function Book(props: BookProps) {

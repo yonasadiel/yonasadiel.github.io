@@ -1,7 +1,7 @@
 'use client';
 
-import { store } from './_lib/store'
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
+import { store } from './_lib/store';
 
 export default function RootLayout({
   children,

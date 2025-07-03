@@ -1,13 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { sessionApi } from 'app/electric-state/_lib/sessionApi'
+import { dynamicSessionApi, staticSessionApi } from 'app/electric-state/_lib/api'
 
 export const store = configureStore({
   reducer: {
-    [sessionApi.reducerPath]: sessionApi.reducer,
+    [staticSessionApi.reducerPath]: staticSessionApi.reducer,
+    [dynamicSessionApi.reducerPath]: dynamicSessionApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sessionApi.middleware),
+    getDefaultMiddleware()
+      .concat(staticSessionApi.middleware)
+      .concat(dynamicSessionApi.middleware),
 })
 
 setupListeners(store.dispatch)

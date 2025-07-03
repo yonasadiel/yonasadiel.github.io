@@ -1,6 +1,6 @@
+import { useGetDynamicSessionDataQuery, useGetStaticSessionDataQuery } from 'app/electric-state/_lib/api';
+import { SessionData } from 'app/electric-state/_lib/type';
 import { useEffect, useState } from 'react';
-import { useGetSessionDataQuery } from '../sessionApi';
-import { SessionData } from '../type';
 
 const LOCAL_STORAGE_KEY = 'electric-state-session';
 
@@ -9,39 +9,47 @@ export function useSessionData({ sessionId, travelerName, token }: {
   travelerName: string | null;
   token: string | null;
 }) {
-  const [localData, setLocalData] = useState<SessionData | null>(null);
+  const [sessionData, setSessionData] = useState<SessionData | null>(null);
+  const {
+    data: staticSessionData,
+    isLoading: isStaticApiLoading,
+    isSuccess: isStaticApiSuccess,
+    error: staticApiError,
+  } = useGetStaticSessionDataQuery(
+    { sessionId, travelerName: travelerName || '', token: token || '' },
+    { skip: !travelerName || !token },
+  );
 
   const {
-    data: apiData,
-    isLoading: isApiLoading,
-    error: apiError,
-  } = useGetSessionDataQuery(
+    data: dynamicSessionData,
+    isLoading: isDynamicApiLoading,
+    error: dynamicApiError,
+  } = useGetDynamicSessionDataQuery(
     { sessionId, travelerName: travelerName || '', token: token || '' },
-    { skip: !travelerName || !token }
+    { skip: !travelerName || !token || !isStaticApiSuccess, pollingInterval: 10_000, },
   );
 
   // Load from local storage on mount
   useEffect(() => {
-    loadLocalStorage(sessionId).then((sessionData) => setLocalData(sessionData))
+    loadLocalStorage(sessionId).then((sessionData) => setSessionData(sessionData))
   }, [sessionId]);
 
   // Update local storage when API data changes
   useEffect(() => {
-    if (!!apiData) {
-      storeLocalStorage(sessionId, apiData);
-      setLocalData(apiData);
+    const newData = dynamicSessionData ?? staticSessionData
+    if (newData) {
+      storeLocalStorage(sessionId, newData)
+      setSessionData(newData);
     }
-  }, [apiData, sessionId]);
+  }, [staticSessionData, dynamicSessionData, sessionId]);
 
   const errorMessage = !travelerName || !token
     ? 'This is a page to play Electric State RPG.'
-    : apiError
-      ? 'Failed fetching session data.'
-      : '';
+    : (!!staticApiError ? 'Failed fetching session data ' + (staticApiError ?? dynamicApiError) : '')
 
   return {
-    sessionData: apiData || localData,
-    isLoading: isApiLoading && !localData,
+    sessionData: sessionData,
+    isLoading: isStaticApiLoading || isDynamicApiLoading,
     error: errorMessage,
   };
 }

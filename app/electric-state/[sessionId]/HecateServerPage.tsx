@@ -5,7 +5,7 @@ import Book from 'app/electric-state/_components/book/Book';
 import FadeInImage from 'app/electric-state/_components/Image';
 import WelcomePage from 'app/electric-state/_components/WelcomePage';
 import { convertSessionIdToTitle } from 'app/electric-state/_lib';
-import { useSessionData } from 'app/electric-state/_lib/hooks/useSessionData';
+import { useSessionData } from 'app/electric-state/_lib/hooks';
 import { Open_Sans } from 'next/font/google';
 import { useState } from 'react';
 
