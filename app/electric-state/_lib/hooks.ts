@@ -49,7 +49,7 @@ export function useSessionData({ sessionId, travelerName, token }: {
 
   return {
     sessionData: sessionData,
-    isLoading: isStaticApiLoading || isDynamicApiLoading,
+    isLoading: !sessionData,
     error: errorMessage,
   };
 }
