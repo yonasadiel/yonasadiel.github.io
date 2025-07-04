@@ -26,7 +26,7 @@ export function useSessionData({ sessionId, travelerName, token }: {
     error: dynamicApiError,
   } = useGetDynamicSessionDataQuery(
     { sessionId, travelerName: travelerName || '', token: token || '' },
-    { skip: !travelerName || !token || !isStaticApiSuccess, pollingInterval: 10_000, },
+    { skip: !travelerName || !token || !isStaticApiSuccess || true, pollingInterval: 10_000, },
   );
 
   // Load from local storage on mount
