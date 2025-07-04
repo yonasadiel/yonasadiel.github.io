@@ -9,9 +9,15 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params: { sessionId } }: { params: { sessionId: string } }): Promise<Metadata> {
+  const title = convertSessionIdToTitle(sessionId)
   return {
-    title: convertSessionIdToTitle(sessionId),
+    title: title,
     description: 'Play Electric State RPG',
+    icons: '/assets/electric-state.ico',
+    metadataBase: new URL('https://yonasadiel.com'),
+    openGraph: {
+      images: '/images/hecate/sentre.jpg'
+    }
   }
 }
 

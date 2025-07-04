@@ -36,7 +36,7 @@ const OlympusLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html className={`${roboto.className}`}>
       <head>
-        <link rel="icon" type="image/x-icon" href="/assets/favicon-32.ico" />
+        {/* <link rel="icon" type="image/x-icon" href="/assets/favicon-32.ico" /> */}
       </head>
       <body>
         <CssVarsProvider theme={theme}>

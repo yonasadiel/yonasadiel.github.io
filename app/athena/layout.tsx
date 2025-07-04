@@ -2,6 +2,13 @@ import Index from 'app/athena/_components/Index'
 import Navbar from 'app/athena/_components/Navbar'
 import AthenaThemeProvider from 'app/athena/_components/ThemeProvider'
 import styles from 'app/athena/layout.module.scss'
+import { Metadata } from 'next'
+
+export async function generateMetadata({ params: { sessionId } }: { params: { sessionId: string } }): Promise<Metadata> {
+  return {
+    icons: '/assets/favicon-32.ico'
+  }
+}
 
 const AthenaLayout = ({
   children,
