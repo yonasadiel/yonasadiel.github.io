@@ -4,8 +4,8 @@ import styles from 'app/electric-state/[sessionId]/styles.module.scss';
 import Book from 'app/electric-state/_components/book/Book';
 import FadeInImage from 'app/electric-state/_components/Image';
 import WelcomePage from 'app/electric-state/_components/WelcomePage';
-import { convertSessionIdToTitle } from 'app/electric-state/_lib';
 import { useSessionData } from 'app/electric-state/_lib/hooks';
+import { convertSessionIdToTitle } from 'app/hecate/_lib/util';
 import { Open_Sans } from 'next/font/google';
 import { useState } from 'react';
 

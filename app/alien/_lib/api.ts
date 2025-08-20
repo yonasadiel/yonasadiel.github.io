@@ -3,16 +3,16 @@ import { SessionData } from 'app/electric-state/_lib/type';
 import { googleScriptUrl, tunnelUrl } from 'app/hecate/_lib/api';
 
 export const staticSessionApi = createApi({
-  reducerPath: 'electricStateStaticSessionApi',
+  reducerPath: 'alienStaticSessionApi',
   baseQuery: fetchBaseQuery({ baseUrl: googleScriptUrl }),
   endpoints: (builder) => ({
-    getSessionData: builder.query<SessionData, { sessionId: string; travelerName: string; token: string }>({
-      query: ({ sessionId, travelerName, token }) => ({
+    getSessionData: builder.query<SessionData, { sessionId: string; playerName: string; token: string }>({
+      query: ({ sessionId, playerName, token }) => ({
         url: 'exec',
         params: {
           action: 'getSession',
           session: sessionId,
-          name: travelerName,
+          name: playerName,
           token: token,
         },
       }),
@@ -21,14 +21,14 @@ export const staticSessionApi = createApi({
 })
 
 export const dynamicSessionApi = createApi({
-  reducerPath: 'electricStateDynamicSessionApi',
+  reducerPath: 'alienDynamicSessionApi',
   baseQuery: fetchBaseQuery({ baseUrl: tunnelUrl }),
   endpoints: (builder) => ({
-    getSessionData: builder.query<SessionData, { sessionId: string; travelerName: string; token: string }>({
-      query: ({ sessionId, travelerName, token }) => ({
+    getSessionData: builder.query<SessionData, { sessionId: string; playerName: string; token: string }>({
+      query: ({ sessionId, playerName, token }) => ({
         url: `session/${sessionId}`,
         params: {
-          name: travelerName,
+          name: playerName,
           token: token,
         },
       }),

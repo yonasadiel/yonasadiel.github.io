@@ -1,6 +1,6 @@
 'use client';
 
-import { store } from 'app/electric-state/_lib/store';
+import { store } from 'app/alien/_lib/store';
 import { Provider } from 'react-redux';
 
 export default function RootLayout({

@@ -1,22 +1,22 @@
-import HecateClientPage from 'app/electric-state/[sessionId]/HecateClientPage';
-import HecateServerPage from 'app/electric-state/[sessionId]/HecateServerPage';
+import HecateClientPage from 'app/alien/[sessionId]/HecateClientPage';
+import HecateServerPage from 'app/alien/[sessionId]/HecateServerPage';
 import { convertSessionIdToTitle } from 'app/hecate/_lib/util';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
 export async function generateStaticParams() {
-  return [{ sessionId: 'wasteland-justice' }]
+  return [{ sessionId: 'chariot-of-the-gods' }]
 }
 
 export async function generateMetadata({ params: { sessionId } }: { params: { sessionId: string } }): Promise<Metadata> {
   const title = convertSessionIdToTitle(sessionId)
   return {
     title: title,
-    description: 'Play Electric State RPG. Use this website as your character sheet, story tracker, and map viewer.',
-    icons: '/assets/electric-state.ico',
+    description: 'Play Alien RPG. Use this website as your character sheet, story tracker, and map viewer.',
+    icons: '/assets/alien.ico',
     metadataBase: new URL('https://yonasadiel.com'),
     openGraph: {
-      images: '/images/hecate/sentre.jpg'
+      images: '/images/hecate/alien-cover.jpg'
     }
   }
 }
@@ -24,7 +24,7 @@ export async function generateMetadata({ params: { sessionId } }: { params: { se
 export default function Page({ params: { sessionId } }: { params: { sessionId: string }}) {
   return (
     <>
-      <Suspense fallback={<HecateServerPage sessionId={sessionId} travelerName={null} token={null} />}>
+      <Suspense fallback={<HecateServerPage sessionId={sessionId} />}>
         <HecateClientPage sessionId={sessionId} />
       </Suspense>
     </>

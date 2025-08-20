@@ -1,12 +1,12 @@
-import { useGetDynamicSessionDataQuery, useGetStaticSessionDataQuery } from 'app/electric-state/_lib/api';
-import { SessionData } from 'app/electric-state/_lib/type';
+import { useGetDynamicSessionDataQuery, useGetStaticSessionDataQuery } from 'app/alien/_lib/api';
+import { SessionData } from 'app/alien/_lib/type';
 import { loadLocalStorage, storeLocalStorage } from 'app/hecate/_lib/util';
 import { useEffect, useState } from 'react';
 
-export function useSessionData({ sessionId, travelerName, token }: {
+export function useSessionData({ sessionId, playerName, token }: {
   sessionId: string;
-  travelerName: string | null;
-  token: string | null;
+  playerName: string;
+  token: string;
 }) {
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const {
@@ -15,8 +15,7 @@ export function useSessionData({ sessionId, travelerName, token }: {
     isSuccess: isStaticApiSuccess,
     error: staticApiError,
   } = useGetStaticSessionDataQuery(
-    { sessionId, travelerName: travelerName || '', token: token || '' },
-    { skip: !travelerName || !token },
+    { sessionId, playerName, token },
   );
 
   const {
@@ -24,8 +23,8 @@ export function useSessionData({ sessionId, travelerName, token }: {
     isLoading: isDynamicApiLoading,
     error: dynamicApiError,
   } = useGetDynamicSessionDataQuery(
-    { sessionId, travelerName: travelerName || '', token: token || '' },
-    { skip: !travelerName || !token || !isStaticApiSuccess || true, pollingInterval: 10_000, },
+    { sessionId, playerName, token },
+    { skip: !isStaticApiSuccess || true, pollingInterval: 10_000, },
   );
 
   // Load from local storage on mount
@@ -42,8 +41,8 @@ export function useSessionData({ sessionId, travelerName, token }: {
     }
   }, [staticSessionData, dynamicSessionData, sessionId]);
 
-  const errorMessage = !travelerName || !token
-    ? 'This is a page to play Electric State RPG.'
+  const errorMessage = !playerName || !token
+    ? 'This is a page to play Alien RPG.'
     : (!!staticApiError ? 'Failed fetching session data ' + (staticApiError ?? dynamicApiError) : '')
 
   return {
